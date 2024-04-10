@@ -33,6 +33,10 @@
     color: variables.$primary-color;
     text-transform: uppercase;
     font-size: 1.6rem;
+
+    &:hover {
+      color: variables.$second-color;
+    }
   }
 }
 

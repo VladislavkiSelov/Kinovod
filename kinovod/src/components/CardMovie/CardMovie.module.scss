@@ -1,0 +1,44 @@
+@use "../../style/variables.scss";
+
+.card {
+  width: calc((100% - 8rem) / 5);
+  min-width: 17rem;
+  cursor: pointer;
+}
+
+.poster {
+  width: 100%;
+  height: 29rem;
+  margin-bottom: 1rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.titel {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
+
+.icon_start {
+  width: 1.5rem;
+}
+
+.rating {
+  color: variables.$second-color;
+  font-size: 1.4rem;
+  margin-right: 1rem;
+  margin-left: 0.3rem;
+}
+
+.year{
+    font-size: 1.4rem;
+}
