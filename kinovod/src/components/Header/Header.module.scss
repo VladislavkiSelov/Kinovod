@@ -1,0 +1,42 @@
+@use "../../style/variables.scss";
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.6rem;
+  padding-bottom: 1.6rem;
+}
+
+.white {
+  * {
+    fill: variables.$primary-color;
+  }
+}
+
+.navigation_left {
+  display: flex;
+  align-items: center;
+
+  ul {
+    display: flex;
+    margin-left: 2rem;
+  }
+
+  li {
+    margin-right: 1.5rem;
+  }
+
+  a {
+    text-decoration: none;
+    color: variables.$primary-color;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+  }
+}
+
+.navigation_right {
+  display: flex;
+  gap: 2rem;
+}
