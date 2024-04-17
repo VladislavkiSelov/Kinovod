@@ -9,9 +9,9 @@ export default function Main() {
   const [serialPopular, setSerialPopular] = useState([]);
 
   useEffect(() => {
-    client.getMoviesNowPlaying(`movies-now-playing`).then((res) => setMoviesNowPlaying(res));
-    client.getMoviesPopular(`movies-popular`).then((res) => setMoviesPopular(res));
-    client.getSerialPopular(`serial-popular`).then((res) => setSerialPopular(res));
+    client.getMoviesNowPlaying(`3/movie/now_playing?language=ru&page=1`).then((res) => setMoviesNowPlaying(res.results));
+    client.getMoviesPopular(`3/movie/popular?language=ru&page=1`).then((res) => setMoviesPopular(res.results));
+    client.getSerialPopular(`3/tv/popular?language=ru&page=1`).then((res) => setSerialPopular(res.results));
   }, []);
 
   return (
