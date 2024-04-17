@@ -37,4 +37,13 @@ export const client = {
   async getMovie(path) {
     return await getApiTMDB(path);
   },
+  async getActors(path) {
+    return await getApiTMDB(path);
+  },
+  async getDirectors(path) {
+    return await getApiTMDB(path);
+  },
+  async getTrailer(path) {
+    return await getApiTMDB(path);
+  },
 };

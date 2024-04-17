@@ -12,18 +12,20 @@ import StarIcon from "@mui/icons-material/Star";
 export default function MoviePage() {
   let { movie_id } = useParams();
   const [movie, setMovie] = useState({});
+  const [trailer, setTrailer] = useState({});
   const [actors, setActors] = useState([]);
   const [directors, setDirectors] = useState([]);
   const [rating, setRating] = useState(0);
-  console.log(movie);
+  const trailerUrl = `https://www.youtube.com/embed/${trailer.key}`;
 
   useEffect(() => {
     client.getMovie(`3/movie/${movie_id}?language=ru`).then((res) => {
       setMovie(res);
       setRating(Math.round(res.vote_average));
     });
-    client.getMovie(`3/movie/${movie_id}/credits?language=ru`).then((res) => setActors(res.cast));
-    client.getMovie(`3/movie/${movie_id}/credits?language=ru`).then((res) => setDirectors(res.crew));
+    client.getActors(`3/movie/${movie_id}/credits?language=ru`).then((res) => setActors(res.cast));
+    client.getDirectors(`3/movie/${movie_id}/credits?language=ru`).then((res) => setDirectors(res.crew));
+    client.getTrailer(`3/movie/${movie_id}/videos?language=ru`).then((res) => setTrailer(res.results.find((video) => video.type === "Trailer")));
   }, []);
 
   function transformationMinutes(runtime) {
@@ -39,86 +41,90 @@ export default function MoviePage() {
 
   return (
     <div className={style.movie_page}>
-      <div className={style.poster}>
-        <div className={style.picture}>
-          <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="poster" />
+      <div className={style.wrapper_head}>
+        <div className={style.poster}>
+          <div className={style.picture}>
+            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="poster" />
+          </div>
+          <div className={style.info}>
+            <IconStar className={style.icon_start} />
+            <p>{movie.vote_average}</p>
+          </div>
+          <Stack spacing={1}>
+            <Rating
+              value={rating}
+              onChange={handleRatingChange}
+              name="half-rating"
+              emptyIcon={<StarBorderIcon style={{ color: "#faaf00", fontSize: "2rem" }} />}
+              max={10}
+              precision={1}
+              icon={<StarIcon style={{ fontSize: "2rem" }} />}
+            />
+          </Stack>
         </div>
-        <div className={style.info}>
-          <IconStar className={style.icon_start} />
-          <p>{movie.vote_average}</p>
+        <div className={style.movie_info}>
+          <h2>{movie.title}</h2>
+          <div>
+            <h3>Название</h3>
+            <h4>{movie.original_title}</h4>
+          </div>
+          <div>
+            <h3>Год</h3>
+            <h4>{moment(movie.release_date).format("YYYY")}</h4>
+          </div>
+          <div>
+            <h3>Страна</h3>
+            <div>
+              {movie.production_countries?.map((el) => (
+                <span key={el.name}>{el.name}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3>Жанр</h3>
+            <div className={style.list_genres}>
+              {movie.genres?.map((el, index) => (
+                <span key={index}>{el.name[0].toUpperCase() + el.name.slice(1) + ", "}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3>Режиссер</h3>
+            <div>
+              {movie.production_countries?.map((el) => (
+                <span key={el.name}>{el.name}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3>Актеры</h3>
+            <div className={style.list_actors}>
+              {actors.slice(0, 10)?.map((el) => (
+                <span key={el.name}>{el.name + ", "}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3>Режиссер</h3>
+            <div>
+              {directors.slice(0, 1)?.map((el) => (
+                <span key={el.name}>{el.name}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3>Длительность</h3>
+            <span>
+              {transformationMinutes(movie.runtime).hours} час {transformationMinutes(movie.runtime).minutes} минута
+            </span>
+          </div>
+          <div className={style.overview}>
+            <p>{movie.overview}</p>
+          </div>
         </div>
-        <Stack spacing={1}>
-          <Rating
-            value={rating}
-            onChange={handleRatingChange}
-            name="half-rating"
-            emptyIcon={<StarBorderIcon style={{ color: "#faaf00", fontSize: "2rem" }} />}
-            max={10}
-            precision={1}
-            icon={<StarIcon style={{ fontSize: "2rem" }} />}
-          />
-        </Stack>
       </div>
-
-      <div className={style.movie_info}>
-        <h2>{movie.title}</h2>
-        <div>
-          <h3>Название</h3>
-          <h4>{movie.original_title}</h4>
-        </div>
-        <div>
-          <h3>Год</h3>
-          <h4>{moment(movie.release_date).format("YYYY")}</h4>
-        </div>
-        <div>
-          <h3>Страна</h3>
-          <div>
-            {movie.production_countries?.map((el) => (
-              <span>{el.name}</span>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h3>Жанр</h3>
-          <div className={style.list_genres}>
-            {movie.genres?.map((el, index) => (
-              <span key={index}>{el.name[0].toUpperCase() + el.name.slice(1) + ', '}</span>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h3>Режиссер</h3>
-          <div>
-            {movie.production_countries?.map((el) => (
-              <span>{el.name}</span>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h3>Актеры</h3>
-          <div className={style.list_actors}>
-            {actors.slice(0, 10)?.map((el) => (
-              <span>{el.name + ', '}</span>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h3>Режиссер</h3>
-          <div>
-            {directors.slice(0, 1)?.map((el) => (
-              <span>{el.name}</span>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h3>Длительность</h3>
-          <span>
-            {transformationMinutes(movie.runtime).hours} час {transformationMinutes(movie.runtime).minutes} минута
-          </span>
-        </div>
-        <div className={style.overview}>
-          <p>{movie.overview}</p>
-        </div>
+      <div className={style.box_video}>
+        <iframe className={style.trailer} src={trailerUrl} frameborder="0" allowfullscreen></iframe>
       </div>
     </div>
   );

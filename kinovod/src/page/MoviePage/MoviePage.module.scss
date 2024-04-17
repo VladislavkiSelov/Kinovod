@@ -1,7 +1,21 @@
 .movie_page {
+}
+
+.wrapper_head {
   display: flex;
   gap: 20px;
   padding-top: 2rem;
+  margin-bottom: 8rem;
+}
+
+.box_video{
+   display: flex;
+   justify-content: center; 
+}
+
+.trailer{
+    width: 100rem;
+    height: 50rem;
 }
 
 .picture {
@@ -67,11 +81,13 @@
 .list_actors {
   span {
     margin-right: 0.5rem;
+
   }
 }
 
 .overview {
   margin-top: 3rem;
+
   p {
     font-size: 1.6rem;
     line-height: 1.6;
