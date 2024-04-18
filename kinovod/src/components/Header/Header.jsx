@@ -15,22 +15,13 @@ export default function Header() {
         </div>
         <ul className={style.navigation_list}>
           <li>
-            <Link to="/">Фильмы</Link>
+            <Link to="media-content/movie">Фильмы</Link>
           </li>
           <li>
-            <Link to="/">Сериалы</Link>
+            <Link to="media-content/serial">Сериалы</Link>
           </li>
           <li>
-            <Link to="/">Телепередачи</Link>
-          </li>
-          <li>
-            <Link to="/">Мультфильмы</Link>
-          </li>
-          <li>
-            <Link to="/">Скоро</Link>
-          </li>
-          <li>
-            <Link to="/">Подборки</Link>
+            <Link to="media-content/coming-soon">Скоро</Link>
           </li>
         </ul>
       </nav>

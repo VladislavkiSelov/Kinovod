@@ -8,6 +8,8 @@ import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
+import AddComment from "../../components/AddComment/AddComment";
+import Button from "../../components/Button/Button";
 
 export default function MoviePage() {
   let { movie_id } = useParams();
@@ -16,7 +18,7 @@ export default function MoviePage() {
   const [actors, setActors] = useState([]);
   const [directors, setDirectors] = useState([]);
   const [rating, setRating] = useState(0);
-  const trailerUrl = `https://www.youtube.com/embed/${trailer.key}`;
+  const trailerUrl = `https://www.youtube.com/embed/${trailer?.key}`;
 
   useEffect(() => {
     client.getMovie(`3/movie/${movie_id}?language=ru`).then((res) => {
@@ -26,7 +28,7 @@ export default function MoviePage() {
     client.getActors(`3/movie/${movie_id}/credits?language=ru`).then((res) => setActors(res.cast));
     client.getDirectors(`3/movie/${movie_id}/credits?language=ru`).then((res) => setDirectors(res.crew));
     client.getTrailer(`3/movie/${movie_id}/videos?language=ru`).then((res) => setTrailer(res.results.find((video) => video.type === "Trailer")));
-  }, []);
+  }, [movie_id]);
 
   function transformationMinutes(runtime) {
     const duration = moment.duration(runtime, "minutes");
@@ -38,6 +40,8 @@ export default function MoviePage() {
   const handleRatingChange = (event, newValue) => {
     setRating(newValue);
   };
+
+  console.log(trailerUrl);
 
   return (
     <div className={style.movie_page}>
@@ -75,7 +79,7 @@ export default function MoviePage() {
           <div>
             <h3>Страна</h3>
             <div>
-              {movie.production_countries?.map((el) => (
+              {movie?.production_countries?.map((el) => (
                 <span key={el.name}>{el.name}</span>
               ))}
             </div>
@@ -98,19 +102,11 @@ export default function MoviePage() {
           </div>
           <div>
             <h3>Актеры</h3>
-            <div className={style.list_actors}>
-              {actors.slice(0, 10)?.map((el) => (
-                <span key={el.name}>{el.name + ", "}</span>
-              ))}
-            </div>
+            <div className={style.list_actors}>{actors && actors.slice(0, 10)?.map((el) => <span key={el.name}>{el.name + ", "}</span>)}</div>
           </div>
           <div>
             <h3>Режиссер</h3>
-            <div>
-              {directors.slice(0, 1)?.map((el) => (
-                <span key={el.name}>{el.name}</span>
-              ))}
-            </div>
+            <div>{actors && directors.slice(0, 1)?.map((el) => <span key={el.name}>{el.name}</span>)}</div>
           </div>
           <div>
             <h3>Длительность</h3>
@@ -124,8 +120,12 @@ export default function MoviePage() {
         </div>
       </div>
       <div className={style.box_video}>
-        <iframe className={style.trailer} src={trailerUrl} frameborder="0" allowfullscreen></iframe>
+        <div className={style.video_container}>
+          <iframe className={style.trailer} src={trailerUrl} frameBorder="0" allowFullScreen></iframe>
+        </div>
+        <Button text="В избранное" />
       </div>
+      <AddComment />
     </div>
   );
 }

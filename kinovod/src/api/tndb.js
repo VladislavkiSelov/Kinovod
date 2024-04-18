@@ -46,4 +46,7 @@ export const client = {
   async getTrailer(path) {
     return await getApiTMDB(path);
   },
+  async СomingSoon(path) {
+    return await getApiTMDB(path);
+  },
 };
