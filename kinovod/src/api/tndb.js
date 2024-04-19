@@ -1,16 +1,5 @@
 import axios from "axios";
-const url = `http://localhost:7000`;
 const urlTMDB = `https://api.themoviedb.org`;
-
-async function get(path) {
-  try {
-    const result = await axios.get(`${url}/${path}`);
-    return result.data;
-  } catch (error) {
-    console.error("Error:", error);
-    return [];
-  }
-}
 
 async function getApiTMDB(path) {
   try {

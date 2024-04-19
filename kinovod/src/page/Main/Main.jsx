@@ -2,16 +2,27 @@ import React, { useEffect, useState } from "react";
 import style from "./Main.module.scss";
 import { client } from "../../api/tndb";
 import CardMovie from "../../components/CardMovie/CardMovie";
+import { addTypeMediaContent } from "../../helpFunction/helpFunction";
 
 export default function Main() {
   const [moviesNowPlaying, setMoviesNowPlaying] = useState([]);
   const [moviesPopular, setMoviesPopular] = useState([]);
   const [serialPopular, setSerialPopular] = useState([]);
 
+
   useEffect(() => {
-    client.getMoviesNowPlaying(`3/movie/now_playing?language=ru&page=1`).then((res) => setMoviesNowPlaying(res.results));
-    client.getMoviesPopular(`3/movie/popular?language=ru&page=1`).then((res) => setMoviesPopular(res.results));
-    client.getSerialPopular(`3/tv/popular?language=ru&page=1`).then((res) => setSerialPopular(res.results));
+    client.getMoviesNowPlaying(`3/movie/now_playing?language=ru&page=1`).then((res) => {
+      const result = addTypeMediaContent(res.results, "movie");
+      setMoviesNowPlaying(result);
+    });
+    client.getMoviesPopular(`3/movie/popular?language=ru&page=1`).then((res) => {
+      const result = addTypeMediaContent(res.results, "movie");
+      setMoviesPopular(result);
+    });
+    client.getSerialPopular(`3/tv/popular?language=ru&page=1`).then((res) => {
+      const result = addTypeMediaContent(res.results, "serial");
+      setSerialPopular(result);
+    });
   }, []);
 
   return (

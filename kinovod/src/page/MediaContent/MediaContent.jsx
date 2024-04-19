@@ -5,6 +5,9 @@ import { client } from "../../api/tndb";
 import CardMovie from "../../components/CardMovie/CardMovie";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { addTypeMediaContent } from "../../helpFunction/helpFunction";
+import Filter from "../../components/Filter/Filter";
+import Sort from "../../components/Sort/Sort";
 
 export default function MediaContent() {
   const { media_content } = useParams();
@@ -17,21 +20,24 @@ export default function MediaContent() {
     switch (media_content) {
       case "movie":
         client.getMoviesPopular(`3/movie/popular?language=ru&page=${сurrentPage}`).then((res) => {
-          setContent(res.results);
+          const result = addTypeMediaContent(res.results, "movie");
+          setContent(result);
           setTitel("Фильмы");
           setTotalPages(res.total_pages);
         });
         break;
       case "serial":
         client.getSerialPopular(`3/tv/popular?language=ru&page=${сurrentPage}`).then((res) => {
-          setContent(res.results);
+          const result = addTypeMediaContent(res.results, "serial");
+          setContent(result);
           setTitel("Сериалы");
           setTotalPages(res.total_pages);
         });
         break;
       case "coming-soon":
         client.СomingSoon(`3/movie/upcoming?language=ru&page=${сurrentPage}`).then((res) => {
-          setContent(res.results);
+          const result = addTypeMediaContent(res.results, "movie");
+          setContent(result);
           setTitel("Скоро на сайте");
           setTotalPages(res.total_pages);
         });
@@ -49,7 +55,13 @@ export default function MediaContent() {
   };
   return (
     <div>
-      <h3 className={style.titel}>{titel}</h3>
+      <div className={style.header}>
+        <h3 className={style.titel}>{titel}</h3>
+        <div className={style.filter}>
+          <Filter />
+          <Sort />
+        </div>
+      </div>
       <div className={style.content}>
         {content.map((item) => {
           return <CardMovie key={item.id} item={item} />;

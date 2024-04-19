@@ -9,7 +9,7 @@ export default function CardMovie(props) {
   const navigate = useNavigate();
 
   function handelClick() {
-    navigate(`/movie/${item.id}`);
+    navigate(`/movie/${item.id}/type/${item.type}`);
   }
 
   return (

@@ -12,7 +12,7 @@ import AddComment from "../../components/AddComment/AddComment";
 import Button from "../../components/Button/Button";
 
 export default function MoviePage() {
-  let { movie_id } = useParams();
+  const { movie_id, type } = useParams();
   const [movie, setMovie] = useState({});
   const [trailer, setTrailer] = useState({});
   const [actors, setActors] = useState([]);
@@ -21,14 +21,31 @@ export default function MoviePage() {
   const trailerUrl = `https://www.youtube.com/embed/${trailer?.key}`;
 
   useEffect(() => {
-    client.getMovie(`3/movie/${movie_id}?language=ru`).then((res) => {
-      setMovie(res);
-      setRating(Math.round(res.vote_average));
-    });
+    switch (type) {
+      case "movie":
+        client.getMovie(`3/movie/${movie_id}?language=ru`).then((res) => {
+          setMovie(res);
+          setRating(Math.round(res.vote_average));
+        });
+        client.getTrailer(`3/movie/${movie_id}/videos?language=ru`).then((res) => setTrailer(res.results.find((video) => video.type === "Trailer")));
+        break;
+
+      case "serial":
+        client.getMovie(`3/tv/${movie_id}?language=ru`).then((res) => {
+          setMovie(res);
+          setRating(Math.round(res.vote_average));
+        });
+        client.getTrailer(`3/tv/${movie_id}/videos?language=ru`).then((res) => setTrailer(res.results[0]?.key));
+        break;
+
+      default:
+        setMovie({});
+        break;
+    }
+
     client.getActors(`3/movie/${movie_id}/credits?language=ru`).then((res) => setActors(res.cast));
     client.getDirectors(`3/movie/${movie_id}/credits?language=ru`).then((res) => setDirectors(res.crew));
-    client.getTrailer(`3/movie/${movie_id}/videos?language=ru`).then((res) => setTrailer(res.results.find((video) => video.type === "Trailer")));
-  }, [movie_id]);
+  }, [movie_id, type]);
 
   function transformationMinutes(runtime) {
     const duration = moment.duration(runtime, "minutes");
@@ -40,8 +57,6 @@ export default function MoviePage() {
   const handleRatingChange = (event, newValue) => {
     setRating(newValue);
   };
-
-  console.log(trailerUrl);
 
   return (
     <div className={style.movie_page}>
@@ -70,7 +85,7 @@ export default function MoviePage() {
           <h2>{movie.title}</h2>
           <div>
             <h3>Название</h3>
-            <h4>{movie.original_title}</h4>
+            <h4>{movie.original_title || movie.name}</h4>
           </div>
           <div>
             <h3>Год</h3>
@@ -108,12 +123,14 @@ export default function MoviePage() {
             <h3>Режиссер</h3>
             <div>{actors && directors.slice(0, 1)?.map((el) => <span key={el.name}>{el.name}</span>)}</div>
           </div>
-          <div>
-            <h3>Длительность</h3>
-            <span>
-              {transformationMinutes(movie.runtime).hours} час {transformationMinutes(movie.runtime).minutes} минута
-            </span>
-          </div>
+          {type === "movie" && (
+            <div>
+              <h3>Длительность</h3>
+              <span>
+                {transformationMinutes(movie.runtime).hours} час {transformationMinutes(movie.runtime).minutes} минута
+              </span>
+            </div>
+          )}
           <div className={style.overview}>
             <p>{movie.overview}</p>
           </div>
