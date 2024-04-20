@@ -13,8 +13,10 @@ export default function MediaContent() {
   const { media_content } = useParams();
   const [content, setContent] = useState([]);
   const [titel, setTitel] = useState([]);
-  const [totalPages, setTotalPages] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
   const [сurrentPage, setCurrentPage] = useState(1);
+
+  console.log(сurrentPage);
 
   useEffect(() => {
     switch (media_content) {
@@ -23,7 +25,7 @@ export default function MediaContent() {
           const result = addTypeMediaContent(res.results, "movie");
           setContent(result);
           setTitel("Фильмы");
-          setTotalPages(res.total_pages);
+          setTotalPages(res.total_pages > 500 ? 500 : res.total_pages);
         });
         break;
       case "serial":
@@ -31,7 +33,9 @@ export default function MediaContent() {
           const result = addTypeMediaContent(res.results, "serial");
           setContent(result);
           setTitel("Сериалы");
-          setTotalPages(res.total_pages);
+
+          console.log(res);
+          setTotalPages(res.total_pages > 500 ? 500 : res.total_pages);
         });
         break;
       case "coming-soon":
@@ -39,7 +43,7 @@ export default function MediaContent() {
           const result = addTypeMediaContent(res.results, "movie");
           setContent(result);
           setTitel("Скоро на сайте");
-          setTotalPages(res.total_pages);
+          setTotalPages(res.total_pages > 500 ? 500 : res.total_pages);
         });
         break;
       default:

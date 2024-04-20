@@ -38,4 +38,10 @@ export const client = {
   async СomingSoon(path) {
     return await getApiTMDB(path);
   },
+  async getListGenres(path) {
+    return await getApiTMDB(path);
+  },
+  async getListCountry(path) {
+    return await getApiTMDB(path);
+  },
 };

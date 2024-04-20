@@ -3,16 +3,17 @@
 .header{
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
 .filter{
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .titel {
     font-size: 2.3rem;
-    margin-bottom: 2rem;
   }
   
   .content {
