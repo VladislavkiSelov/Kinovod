@@ -21,7 +21,7 @@ export default function CardMovie(props) {
       <div className={style.info}>
         <IconStar className={style.icon_start} />
         <span className={style.rating}>{item.vote_average}</span>
-        <span className={style.year}>{moment(item.release_date).format("YYYY")}</span>
+        <span className={style.year}>{moment(item.release_date || item.first_air_date).format("YYYY")}</span>
       </div>
     </div>
   );

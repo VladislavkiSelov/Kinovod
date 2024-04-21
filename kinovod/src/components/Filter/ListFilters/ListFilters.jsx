@@ -4,17 +4,55 @@ import { ReactComponent as Arrow } from "../../../assets/icon/arrow_right.svg";
 import List from "../List/List";
 import Button from "../../Button/Button";
 import { useForm } from "react-hook-form";
-import { client } from "../../../api/tndb";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function ListFilters() {
   const [activeElementLi, setActiveElementLi] = useState(null);
   const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+  const { media_content } = useParams();
 
   const onSubmit = (data) => {
-    console.log(data);
-    // client.getFilterListMovie(`3/discover/movie?language=ru&page=1`).then((res) => {
-    //   console.log(res);
-    // });
+    const params = {};
+
+    switch (media_content) {
+      case "movie":
+        if (data.year) {
+          params.primary_release_year = data.year;
+        }
+
+        if (data.country) {
+          params.certification_country = data.country;
+        }
+
+        if (data.genre) {
+          params.with_genres = data.genre;
+        }
+        break;
+
+      case "serial":
+        if (data.year) {
+          params.first_air_date_year = data.year;
+        }
+
+        if (data.country) {
+          params.with_origin_country = data.country;
+        }
+
+        if (data.genre) {
+          params.with_genres = data.genre;
+        }
+        break;
+        
+      default:
+        break;
+    }
+
+    params.language = "ru";
+    params.page = "1";
+
+    const queryParams = new URLSearchParams(params);
+    navigate(`/media-content/${media_content}/filter_params/${queryParams}`);
   };
 
   return (

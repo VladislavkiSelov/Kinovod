@@ -89,7 +89,7 @@ export default function MoviePage() {
           </div>
           <div>
             <h3>Год</h3>
-            <h4>{moment(movie.release_date).format("YYYY")}</h4>
+            <h4>{moment(movie.release_date || movie.first_air_date).format("YYYY")}</h4>
           </div>
           <div>
             <h3>Страна</h3>

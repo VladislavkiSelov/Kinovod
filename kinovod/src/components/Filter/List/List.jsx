@@ -46,7 +46,7 @@ export default function List({ setActiveElementLi, type, register }) {
         {list.map((el) => (
           <li key={el.id || el}>
             <label>
-              <input {...register(type)} value={type === "genre" ? el.name : type === "country" ? el.iso_3166_1 : el} type="checkbox" />
+              <input {...register(type)} value={type === "genre" ? el.id : type === "country" ? el.iso_3166_1 : el} type="checkbox" />
               {type === "genre"
                 ? el.name[0].toUpperCase() + el.name.slice(1)
                 : type === "country"

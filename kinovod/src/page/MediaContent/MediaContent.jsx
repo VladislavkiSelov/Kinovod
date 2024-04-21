@@ -10,18 +10,25 @@ import Filter from "../../components/Filter/Filter";
 import Sort from "../../components/Sort/Sort";
 
 export default function MediaContent() {
-  const { media_content } = useParams();
+  const { media_content, filter_params } = useParams();
   const [content, setContent] = useState([]);
   const [titel, setTitel] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [сurrentPage, setCurrentPage] = useState(1);
 
-  console.log(сurrentPage);
-
   useEffect(() => {
+    function getParamsFilter() {
+      const params = new URLSearchParams(filter_params);
+      const paramsObject = !filter_params ? { language: "ru" } : Object.fromEntries(params.entries());
+      paramsObject.page = сurrentPage;
+      return new URLSearchParams(paramsObject);
+    }
+
+    const queryParams = getParamsFilter();
+
     switch (media_content) {
       case "movie":
-        client.getMoviesPopular(`3/movie/popular?language=ru&page=${сurrentPage}`).then((res) => {
+        client.getMoviesPopular(`3/discover/movie?${queryParams}`).then((res) => {
           const result = addTypeMediaContent(res.results, "movie");
           setContent(result);
           setTitel("Фильмы");
@@ -29,12 +36,10 @@ export default function MediaContent() {
         });
         break;
       case "serial":
-        client.getSerialPopular(`3/tv/popular?language=ru&page=${сurrentPage}`).then((res) => {
+        client.getSerialPopular(`3/discover/tv?${queryParams}`).then((res) => {
           const result = addTypeMediaContent(res.results, "serial");
           setContent(result);
           setTitel("Сериалы");
-
-          console.log(res);
           setTotalPages(res.total_pages > 500 ? 500 : res.total_pages);
         });
         break;
@@ -52,23 +57,26 @@ export default function MediaContent() {
         setTotalPages(false);
         break;
     }
-  }, [сurrentPage, media_content]);
+  }, [сurrentPage, media_content, filter_params]);
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
+
   return (
     <div>
       <div className={style.header}>
         <h3 className={style.titel}>{titel}</h3>
-        <div className={style.filter}>
-          <Filter />
-          <Sort />
-        </div>
+        {media_content !== "coming-soon" && (
+          <div className={style.filter}>
+            <Filter />
+            <Sort />
+          </div>
+        )}
       </div>
       <div className={style.content}>
-        {content.map((item) => {
-          return <CardMovie key={item.id} item={item} />;
+        {content.map((item, i) => {
+          return <CardMovie key={i} item={item} />;
         })}
       </div>
       {totalPages && (
