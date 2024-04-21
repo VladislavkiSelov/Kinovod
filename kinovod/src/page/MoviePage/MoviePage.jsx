@@ -10,6 +10,7 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import AddComment from "../../components/AddComment/AddComment";
 import Button from "../../components/Button/Button";
+import noImg from "../../assets/pic/no_img.jpg";
 
 export default function MoviePage() {
   const { movie_id, type } = useParams();
@@ -63,7 +64,7 @@ export default function MoviePage() {
       <div className={style.wrapper_head}>
         <div className={style.poster}>
           <div className={style.picture}>
-            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="poster" />
+            <img src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : noImg} alt="poster" />
           </div>
           <div className={style.info}>
             <IconStar className={style.icon_start} />
@@ -91,19 +92,21 @@ export default function MoviePage() {
             <h3>Год</h3>
             <h4>{moment(movie.release_date || movie.first_air_date).format("YYYY")}</h4>
           </div>
-          <div>
-            <h3>Страна</h3>
+          {movie.production_countries && (
             <div>
-              {movie?.production_countries?.map((el) => (
-                <span key={el.name}>{el.name}</span>
-              ))}
+              <h3>Страна</h3>
+              <div>
+                {movie?.production_countries?.map((el) => (
+                  <span key={el.name}>{el.name}</span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
           <div>
             <h3>Жанр</h3>
             <div className={style.list_genres}>
               {movie.genres?.map((el, index) => (
-                <span key={index}>{el.name[0].toUpperCase() + el.name.slice(1) + ", "}</span>
+                <span key={index}>{el.name && el.name[0].toUpperCase() + el.name.slice(1) + ", "}</span>
               ))}
             </div>
           </div>

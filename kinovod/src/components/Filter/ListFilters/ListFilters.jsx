@@ -10,10 +10,16 @@ export default function ListFilters() {
   const [activeElementLi, setActiveElementLi] = useState(null);
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
-  const { media_content } = useParams();
+  const { media_content, filter_params} = useParams();
 
   const onSubmit = (data) => {
-    const params = {};
+    function getParamsFilter() {
+      const params = new URLSearchParams(filter_params);
+      const paramsObject = Object.fromEntries(params.entries());
+      return paramsObject;
+    }
+
+    const params = getParamsFilter();
 
     switch (media_content) {
       case "movie":

@@ -3,6 +3,7 @@ import style from "./CardMovie.module.scss";
 import { ReactComponent as IconStar } from "../../assets/icon/raiting.svg";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import noImg from "../../assets/pic/no_img.jpg";
 
 export default function CardMovie(props) {
   const { item } = props;
@@ -15,7 +16,7 @@ export default function CardMovie(props) {
   return (
     <div onClick={handelClick} className={style.card}>
       <div className={style.poster}>
-        <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="poster" />
+        <img src={item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : noImg} alt="poster" />
       </div>
       <h3 className={style.titel}>{item.title}</h3>
       <div className={style.info}>
