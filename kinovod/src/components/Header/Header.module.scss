@@ -42,5 +42,20 @@
 
 .navigation_right {
   display: flex;
+  align-items: center;
   gap: 2rem;
+}
+
+.seach {
+  position: relative;
+  cursor: pointer;
+}
+
+.search_icon {
+  &:hover {
+    * {
+      fill: variables.$second-color;
+    }
+      
+  }
 }

@@ -7,6 +7,7 @@ import noImg from "../../assets/pic/no_img.jpg";
 
 export default function CardMovie(props) {
   const { item } = props;
+  console.log(item);
   const navigate = useNavigate();
 
   function handelClick() {
@@ -18,7 +19,7 @@ export default function CardMovie(props) {
       <div className={style.poster}>
         <img src={item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : noImg} alt="poster" />
       </div>
-      <h3 className={style.titel}>{item.title}</h3>
+      <h3 className={style.titel}>{item.title || item.name}</h3>
       <div className={style.info}>
         <IconStar className={style.icon_start} />
         <span className={style.rating}>{item.vote_average}</span>

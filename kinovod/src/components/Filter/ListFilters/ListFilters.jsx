@@ -10,7 +10,7 @@ export default function ListFilters() {
   const [activeElementLi, setActiveElementLi] = useState(null);
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
-  const { media_content, filter_params} = useParams();
+  const { media_content, filter_params } = useParams();
 
   const onSubmit = (data) => {
     function getParamsFilter() {
@@ -21,35 +21,37 @@ export default function ListFilters() {
 
     const params = getParamsFilter();
 
+    console.log(data);
+
     switch (media_content) {
       case "movie":
-        if (data.year) {
+        if (data.year?.length) {
           params.primary_release_year = data.year;
         }
 
-        if (data.country) {
-          params.certification_country = data.country;
+        if (data.country?.length) {
+          params.with_origin_country = data.country;
         }
 
-        if (data.genre) {
+        if (data.genre?.length) {
           params.with_genres = data.genre;
         }
         break;
 
       case "serial":
-        if (data.year) {
+        if (data.year?.length) {
           params.first_air_date_year = data.year;
         }
 
-        if (data.country) {
+        if (data.country?.length) {
           params.with_origin_country = data.country;
         }
 
-        if (data.genre) {
+        if (data.genre?.length) {
           params.with_genres = data.genre;
         }
         break;
-        
+
       default:
         break;
     }
@@ -58,7 +60,9 @@ export default function ListFilters() {
     params.page = "1";
 
     const queryParams = new URLSearchParams(params);
-    navigate(`/media-content/${media_content}/filter_params/${queryParams}`);
+    console.log(queryParams);
+    console.log(params);
+    navigate(`/media-content/${media_content}/params/${queryParams}`);
   };
 
   return (

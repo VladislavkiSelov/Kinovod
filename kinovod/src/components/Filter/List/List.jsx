@@ -43,8 +43,8 @@ export default function List({ setActiveElementLi, type, register }) {
         <h3 onClick={handelClick}>Жанр</h3>
       </div>
       <ul className={style.list}>
-        {list.map((el) => (
-          <li key={el.id || el}>
+        {list.map((el, i) => (
+          <li key={i}>
             <label>
               <input {...register(type)} value={type === "genre" ? el.id : type === "country" ? el.iso_3166_1 : el} type="checkbox" />
               {type === "genre"

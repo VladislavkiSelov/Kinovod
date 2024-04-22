@@ -47,4 +47,7 @@ export const client = {
   async getFilterListMovie(path) {
     return await getApiTMDB(path);
   },
+  async getSearchListMovie(path) {
+    return await getApiTMDB(path);
+  },
 };

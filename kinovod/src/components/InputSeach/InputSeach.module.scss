@@ -1,0 +1,53 @@
+@use "../../style/variables.scss";
+
+.wrapper {
+  position: relative;
+}
+
+.seach {
+  color: #f1f1f1;
+  background: transparent;
+  border: 1px solid #424242;
+  border-radius: 28px;
+  padding: 0.7rem 5rem;
+  padding-left: 2rem;
+  position: relative;
+  right: 0;
+  top: -0.3rem;
+  z-index: 1;
+  width: 100vw;
+  max-width: 36rem;
+  font-size: 1.6rem;
+}
+
+.white {
+  fill: #424242;
+}
+
+.wrapper_btn {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  right: 1rem;
+  top: 4px;
+  z-index: 2;
+
+  input {
+    position: absolute;
+    inset: 0;
+    background-color: transparent;
+    color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 100;
+  }
+}
+
+.seach_icon {
+  position: absolute;
+  inset: 0;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}

@@ -24,7 +24,7 @@ export default function ListSort() {
     params.sort_by = entry[0];
     const queryParams = new URLSearchParams(params);
 
-    navigate(`/media-content/${media_content}/filter_params/${queryParams}`);
+    navigate(`/media-content/${media_content}/params/${queryParams}`);
   }
 
   return (

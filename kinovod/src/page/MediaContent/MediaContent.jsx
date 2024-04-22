@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import style from "./MediaContent.module.scss";
 import { client } from "../../api/tndb";
 import CardMovie from "../../components/CardMovie/CardMovie";
@@ -10,17 +10,18 @@ import Filter from "../../components/Filter/Filter";
 import Sort from "../../components/Sort/Sort";
 
 export default function MediaContent() {
-  const { media_content, filter_params } = useParams();
+  const { media_content, params } = useParams();
   const [content, setContent] = useState([]);
   const [titel, setTitel] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [сurrentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     function getParamsFilter() {
-      const params = new URLSearchParams(filter_params);
-      const paramsObject = !filter_params ? { language: "ru" } : Object.fromEntries(params.entries());
-      paramsObject.page = сurrentPage;
+      const getParams = new URLSearchParams(params);
+      const paramsObject = !params ? { language: "ru" } : Object.fromEntries(getParams.entries());
+      paramsObject.page = currentPage;
       return new URLSearchParams(paramsObject);
     }
 
@@ -35,6 +36,7 @@ export default function MediaContent() {
           setTotalPages(res.total_pages > 500 ? 500 : res.total_pages);
         });
         break;
+
       case "serial":
         client.getSerialPopular(`3/discover/tv?${queryParams}`).then((res) => {
           const result = addTypeMediaContent(res.results, "serial");
@@ -43,21 +45,45 @@ export default function MediaContent() {
           setTotalPages(res.total_pages > 500 ? 500 : res.total_pages);
         });
         break;
+
       case "coming-soon":
-        client.СomingSoon(`3/movie/upcoming?language=ru&page=${сurrentPage}`).then((res) => {
+        client.СomingSoon(`3/movie/upcoming?language=ru&page=${currentPage}`).then((res) => {
           const result = addTypeMediaContent(res.results, "movie");
           setContent(result);
           setTitel("Скоро на сайте");
           setTotalPages(res.total_pages > 500 ? 500 : res.total_pages);
         });
         break;
+
+      case "search":
+        Promise.all([
+          client.getSearchListMovie(`3/search/movie?${queryParams}`),
+          client.getSearchListMovie(`3/search/tv?${queryParams}`),
+          client.getSearchListMovie(`3/search/multi?${queryParams}`),
+        ])
+          .then(([movie, tv, multi]) => {
+            const movies = addTypeMediaContent(movie.results, "movie");
+            const tvs = addTypeMediaContent(movie.results, "serial");
+            const multis = addTypeMediaContent(movie.results, "movie");
+            //add type;
+            if ([...movie.results, ...tv.results, ...multi.results].length) {
+              setContent([...movies, ...tvs, ...multis]);
+            } else {
+              navigate(-1);
+            }
+          })
+          .catch((error) => {
+            console.error("An error occurred:", error);
+          });
+        break;
+
       default:
         setContent([]);
         setTitel("");
         setTotalPages(false);
         break;
     }
-  }, [сurrentPage, media_content, filter_params]);
+  }, [currentPage, media_content, params, navigate]);
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
