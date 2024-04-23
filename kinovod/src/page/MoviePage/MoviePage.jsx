@@ -4,10 +4,10 @@ import style from "./MoviePage.module.scss";
 import { client } from "../../api/tndb";
 import { ReactComponent as IconStar } from "../../assets/icon/raiting_grey.svg";
 import moment from "moment";
-import Rating from "@mui/material/Rating";
-import Stack from "@mui/material/Stack";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import StarIcon from "@mui/icons-material/Star";
+// import Rating from "@mui/material/Rating";
+// import Stack from "@mui/material/Stack";
+// import StarBorderIcon from "@mui/icons-material/StarBorder";
+// import StarIcon from "@mui/icons-material/Star";
 import AddComment from "../../components/AddComment/AddComment";
 import Button from "../../components/Button/Button";
 import noImg from "../../assets/pic/no_img.jpg";
@@ -70,7 +70,7 @@ export default function MoviePage() {
             <IconStar className={style.icon_start} />
             <p>{movie.vote_average}</p>
           </div>
-          <Stack spacing={1}>
+          {/* <Stack spacing={1}>
             <Rating
               value={rating}
               onChange={handleRatingChange}
@@ -80,7 +80,7 @@ export default function MoviePage() {
               precision={1}
               icon={<StarIcon style={{ fontSize: "2rem" }} />}
             />
-          </Stack>
+          </Stack> */}
         </div>
         <div className={style.movie_info}>
           <h2>{movie.title}</h2>

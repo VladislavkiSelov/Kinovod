@@ -27,3 +27,28 @@ a {
 .css-1c99szj-MuiRating-icon{
   color: #faaf00;
 }
+
+//для плавного перехода между страницами ----------------------------------------------
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 2000ms ease-in;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 2000ms ease-in;
+}
+
+.gZmPOF {
+  display: flex;
+  justify-content: center;
+}

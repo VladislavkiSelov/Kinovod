@@ -7,7 +7,6 @@ import noImg from "../../assets/pic/no_img.jpg";
 
 export default function CardMovie(props) {
   const { item } = props;
-  console.log(item);
   const navigate = useNavigate();
 
   function handelClick() {

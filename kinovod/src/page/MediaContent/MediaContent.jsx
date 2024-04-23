@@ -3,11 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import style from "./MediaContent.module.scss";
 import { client } from "../../api/tndb";
 import CardMovie from "../../components/CardMovie/CardMovie";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
 import { addTypeMediaContent } from "../../helpFunction/helpFunction";
 import Filter from "../../components/Filter/Filter";
 import Sort from "../../components/Sort/Sort";
+import MyPagination from "../../components/MyPagination/MyPagination";
 
 export default function MediaContent() {
   const { media_content, params } = useParams();
@@ -105,17 +104,7 @@ export default function MediaContent() {
           return <CardMovie key={i} item={item} />;
         })}
       </div>
-      {totalPages && (
-        <Stack spacing={2}>
-          <Pagination
-            onChange={handlePageChange}
-            count={totalPages}
-            style={{ backgroundColor: "blue", color: "white" }}
-            variant="outlined"
-            shape="rounded"
-          />
-        </Stack>
-      )}
+      {totalPages && <MyPagination totalPages={totalPages} handlePageChange={handlePageChange} />}
     </div>
   );
 }
