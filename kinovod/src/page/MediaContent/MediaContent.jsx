@@ -7,6 +7,7 @@ import { addTypeMediaContent } from "../../helpFunction/helpFunction";
 import Filter from "../../components/Filter/Filter";
 import Sort from "../../components/Sort/Sort";
 import MyPagination from "../../components/MyPagination/MyPagination";
+import { Oval } from "react-loader-spinner";
 
 export default function MediaContent() {
   const { media_content, params } = useParams();
@@ -15,6 +16,7 @@ export default function MediaContent() {
   const [totalPages, setTotalPages] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     function getParamsFilter() {
@@ -23,8 +25,10 @@ export default function MediaContent() {
       paramsObject.page = currentPage;
       return new URLSearchParams(paramsObject);
     }
-
     const queryParams = getParamsFilter();
+
+
+    setLoading(true);
 
     switch (media_content) {
       case "movie":
@@ -46,7 +50,7 @@ export default function MediaContent() {
         break;
 
       case "coming-soon":
-        client.СomingSoon(`3/movie/upcoming?language=ru&page=${currentPage}`).then((res) => {
+        client.ComingSoon(`3/movie/upcoming?language=ru&page=${currentPage}`).then((res) => {
           const result = addTypeMediaContent(res.results, "movie");
           setContent(result);
           setTitel("Скоро на сайте");
@@ -88,13 +92,29 @@ export default function MediaContent() {
     setCurrentPage(page);
   };
 
+  if (!loading) {
+    return (
+      <Oval
+        height={80}
+        width={80}
+        color="#f1f1f1"
+        wrapperClass="container"
+        visible={true}
+        ariaLabel="oval-loading"
+        secondaryColor="#f1f1f1"
+        strokeWidth={2}
+        strokeWidthSecondary={2}
+      />
+    );
+  }
+
   return (
-    <div>
+    <div className={style.wrapper}>
       <div className={style.header}>
         <h3 className={style.titel}>{titel}</h3>
         {media_content !== "coming-soon" && (
           <div className={style.filter}>
-            <Filter />
+            <Filter/>
             <Sort />
           </div>
         )}

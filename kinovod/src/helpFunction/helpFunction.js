@@ -4,6 +4,13 @@ function addTypeMediaContent(content, type) {
   return newContent;
 }
 
+function getParamsFilter(value) {
+  const getParams = new URLSearchParams(value);
+  const paramsObject = Object.fromEntries(getParams.entries());
+  return paramsObject;
+}
+
 export {
   addTypeMediaContent,
+  getParamsFilter
 };

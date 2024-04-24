@@ -4,13 +4,13 @@ import style from "./MoviePage.module.scss";
 import { client } from "../../api/tndb";
 import { ReactComponent as IconStar } from "../../assets/icon/raiting_grey.svg";
 import moment from "moment";
-// import Rating from "@mui/material/Rating";
-// import Stack from "@mui/material/Stack";
-// import StarBorderIcon from "@mui/icons-material/StarBorder";
-// import StarIcon from "@mui/icons-material/Star";
+import Rating from "@mui/material/Rating";
+import Stack from "@mui/material/Stack";
+import StarIcon from "@mui/icons-material/Star";
 import AddComment from "../../components/AddComment/AddComment";
 import Button from "../../components/Button/Button";
 import noImg from "../../assets/pic/no_img.jpg";
+import { Oval } from "react-loader-spinner";
 
 export default function MoviePage() {
   const { movie_id, type } = useParams();
@@ -19,6 +19,7 @@ export default function MoviePage() {
   const [actors, setActors] = useState([]);
   const [directors, setDirectors] = useState([]);
   const [rating, setRating] = useState(0);
+  const [loading, setLoading] = useState(false);
   const trailerUrl = `https://www.youtube.com/embed/${trailer?.key}`;
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function MoviePage() {
         client.getMovie(`3/movie/${movie_id}?language=ru`).then((res) => {
           setMovie(res);
           setRating(Math.round(res.vote_average));
+          setLoading(true);
         });
         client.getTrailer(`3/movie/${movie_id}/videos?language=ru`).then((res) => setTrailer(res.results.find((video) => video.type === "Trailer")));
         break;
@@ -35,6 +37,7 @@ export default function MoviePage() {
         client.getMovie(`3/tv/${movie_id}?language=ru`).then((res) => {
           setMovie(res);
           setRating(Math.round(res.vote_average));
+          setLoading(true);
         });
         client.getTrailer(`3/tv/${movie_id}/videos?language=ru`).then((res) => setTrailer(res.results[0]?.key));
         break;
@@ -56,8 +59,25 @@ export default function MoviePage() {
   }
 
   const handleRatingChange = (event, newValue) => {
+    console.log(newValue);
     setRating(newValue);
   };
+
+  if (!loading) {
+    return (
+      <Oval
+        height={80}
+        width={80}
+        color="#f1f1f1"
+        wrapperClass="container"
+        visible={true}
+        ariaLabel="oval-loading"
+        secondaryColor="#f1f1f1"
+        strokeWidth={2}
+        strokeWidthSecondary={2}
+      />
+    );
+  }
 
   return (
     <div className={style.movie_page}>
@@ -70,17 +90,18 @@ export default function MoviePage() {
             <IconStar className={style.icon_start} />
             <p>{movie.vote_average}</p>
           </div>
-          {/* <Stack spacing={1}>
+          <Stack spacing={1}>
             <Rating
-              value={rating}
+              name="size-large"
               onChange={handleRatingChange}
-              name="half-rating"
-              emptyIcon={<StarBorderIcon style={{ color: "#faaf00", fontSize: "2rem" }} />}
-              max={10}
+              emptyIcon={<StarIcon style={{ color: "#faaf00", opacity: 0.2 }} fontSize="inherit" />}
               precision={1}
-              icon={<StarIcon style={{ fontSize: "2rem" }} />}
+              max={10}
+              defaultValue={rating}
+              value={rating}
+              size="large"
             />
-          </Stack> */}
+          </Stack>
         </div>
         <div className={style.movie_info}>
           <h2>{movie.title}</h2>

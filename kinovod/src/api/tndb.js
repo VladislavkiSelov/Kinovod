@@ -35,7 +35,7 @@ export const client = {
   async getTrailer(path) {
     return await getApiTMDB(path);
   },
-  async СomingSoon(path) {
+  async ComingSoon(path) {
     return await getApiTMDB(path);
   },
   async getListGenres(path) {

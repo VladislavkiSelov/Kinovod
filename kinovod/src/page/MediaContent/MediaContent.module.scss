@@ -1,25 +1,32 @@
-@use '../../style/variables.scss';
+@use "../../style/variables.scss";
 
-.header{
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
 }
 
-.filter{
+.filter {
   display: flex;
   gap: 2rem;
 }
 
 .titel {
-    font-size: 2.3rem;
-  }
-  
-  .content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    margin-bottom: 4rem;
-    justify-content: center;
-  }
+  font-size: 2.3rem;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 4rem;
+  justify-content: center;
+}
+
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
