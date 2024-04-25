@@ -4,6 +4,10 @@
   width: calc((100% - 8rem) / 5);
   min-width: 17rem;
   cursor: pointer;
+
+  @media (max-width:420px) {
+    min-width: 13rem;
+  }
 }
 
 .poster {
@@ -15,6 +19,10 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media (max-width:420px) {
+    height: 25rem;
   }
 }
 

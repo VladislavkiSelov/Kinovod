@@ -3,10 +3,13 @@ import style from "./Header.module.scss";
 import { Link } from "react-router-dom";
 import { ReactComponent as ProfileIcon } from "../../assets/icon/profile.svg";
 import { ReactComponent as SeachIcon } from "../../assets/icon/seach.svg";
+import { ReactComponent as CloseIconMenu } from "../../assets/icon/close_humdurger.svg";
+import { ReactComponent as OpenIconMenu } from "../../assets/icon/open_humdurger.svg";
 import InputSeach from "../InputSeach/InputSeach";
 
 export default function Header() {
   const [activeSeach, setActiveSeach] = useState(false);
+  const [menu, setMenu] = useState(false);
   const listRef = useRef(null);
 
   useEffect(() => {
@@ -31,7 +34,7 @@ export default function Header() {
             <img src="/img/icon/logo.png" alt="logo" />
           </Link>
         </div>
-        <ul className={style.navigation_list}>
+        <ul onClick={() => setMenu(false)} className={`${style.navigation_list} ${menu && style.navigation_list_active}`}>
           <li>
             <Link to="media-content/movie/params/language=ru">Фильмы</Link>
           </li>
@@ -44,6 +47,10 @@ export default function Header() {
         </ul>
       </nav>
       <div className={`${style.navigation_right}`}>
+        <div onClick={() => (!menu ? setMenu(true) : setMenu(false))} className={style.menu}>
+          {!menu && <CloseIconMenu />}
+          {menu && <OpenIconMenu />}
+        </div>
         <div
           onClick={(e) => {
             e.stopPropagation();

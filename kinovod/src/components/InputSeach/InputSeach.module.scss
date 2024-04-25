@@ -2,6 +2,16 @@
 
 .wrapper {
   position: relative;
+  right: 0;
+  top: 0;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    inset: 0;
+    background: variables.$bg;
+    padding: 2rem 2rem 0 2rem;
+  }
 }
 
 .seach {
@@ -11,13 +21,13 @@
   border-radius: 28px;
   padding: 0.7rem 5rem;
   padding-left: 2rem;
-  position: relative;
-  right: 0;
-  top: -0.3rem;
-  z-index: 1;
   width: 100vw;
   max-width: 36rem;
   font-size: 1.6rem;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 }
 
 .white {
@@ -29,8 +39,9 @@
   width: 2rem;
   height: 2rem;
   right: 1rem;
-  top: 4px;
+  top: 5px;
   z-index: 2;
+  cursor: pointer;
 
   input {
     position: absolute;
@@ -41,6 +52,11 @@
     padding: 0;
     cursor: pointer;
     z-index: 100;
+  }
+
+  @media (max-width: 768px) {
+    top: 2.5rem;
+    right: 3rem;
   }
 }
 
