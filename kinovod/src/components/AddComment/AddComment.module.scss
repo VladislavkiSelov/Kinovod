@@ -1,0 +1,22 @@
+@use "../../style/variables.scss";
+
+.form_add_comment {
+  display: flex;
+  flex-direction: column;
+
+  textarea {
+    width: 100%;
+    min-height: 10rem;
+    border: none;
+    border-bottom: 1px solid #343434;
+    margin-bottom: 0.5em;
+    background: inherit;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    color: variables.$primary-color;
+
+    &:focus {
+        outline: none;
+    }
+  }
+}

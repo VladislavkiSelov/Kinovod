@@ -1,0 +1,33 @@
+@use "../../style/variables.scss";
+
+.pagination {
+  display: flex;
+  justify-content: center;
+
+  .MuiPaginationItem-ellipsis {
+    color: variables.$primary-color;
+  }
+
+  button {
+    color: variables.$primary-color;
+    font-size: 1.6rem;
+  }
+
+  button[aria-current="true"] {
+    color: variables.$primary-color;
+    border: 1px solid #b7bbbd;
+    border-radius: 6px;
+  }
+
+  button[aria-label="Go to next page"],
+  [aria-label="Go to previous page"] {
+    svg {
+      font-size: 2rem;
+    }
+  }
+
+  div {
+    color: variables.$primary-color;
+    font-size: 1.6rem;
+  }
+}

@@ -1,7 +1,19 @@
 .titel {
-    font-size: 2.3rem;
+  font-size: 2.3rem;
+  margin-bottom: 2rem;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 4rem;
+
+  @media (max-width: 768px) {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: scroll;
+    overflow-y: hidden;
   }
-  
-  .content {
-    display: flex;
-  }
+}

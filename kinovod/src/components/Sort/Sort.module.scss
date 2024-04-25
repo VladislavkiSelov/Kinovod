@@ -1,0 +1,15 @@
+.title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    position: relative;
+  
+    & > h3 {
+      font-size: 1.6rem;
+      @media (max-width:420px) {
+        display: none;
+      }
+    }
+  }
+  
