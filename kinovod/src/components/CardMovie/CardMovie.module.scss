@@ -18,7 +18,6 @@
 }
 
 .save_btn {
-  display: none;
   position: absolute;
   top: 0;
   right: 0;
@@ -28,6 +27,10 @@
   border: none;
   cursor: pointer;
   outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
 
   &::before {
     content: "";

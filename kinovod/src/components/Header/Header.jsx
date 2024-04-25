@@ -6,16 +6,26 @@ import { ReactComponent as SeachIcon } from "../../assets/icon/seach.svg";
 import { ReactComponent as CloseIconMenu } from "../../assets/icon/close_humdurger.svg";
 import { ReactComponent as OpenIconMenu } from "../../assets/icon/open_humdurger.svg";
 import InputSeach from "../InputSeach/InputSeach";
+import ProfilePanel from "../ProfilePanel/ProfilePanel";
 
 export default function Header() {
   const [activeSeach, setActiveSeach] = useState(false);
+  const [activeProfile, setActiveProfile] = useState(false);
   const [menu, setMenu] = useState(false);
-  const listRef = useRef(null);
+  const seachRef = useRef(null);
+  const profileRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(e) {
-      if (!listRef.current.contains(e.target)) {
+      // console.log(profileRef.current);
+      // console.log(e.target);
+      console.log(!profileRef.current.contains(e.target));
+      if (!seachRef.current.contains(e.target)) {
         setActiveSeach(false);
+      }
+
+      if (!profileRef.current.contains(e.target)) {
+        setActiveProfile(false);
       }
     }
 
@@ -25,6 +35,13 @@ export default function Header() {
       document.body.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  function clickProfile(e) {
+    e.stopPropagation();
+    if (!activeProfile) {
+      setActiveProfile(true);
+    }
+  }
 
   return (
     <header className={`${style.header} container`}>
@@ -56,14 +73,15 @@ export default function Header() {
             e.stopPropagation();
             setActiveSeach(true);
           }}
-          ref={listRef}
+          ref={seachRef}
           className={style.seach}
         >
           {!activeSeach && <SeachIcon className={`${style.search_icon} ${style.white}`} />}
           {activeSeach && <InputSeach activeSeach={activeSeach} />}
         </div>
-        <div className={style.profile}>
+        <div ref={profileRef} onClick={clickProfile} className={style.profile}>
           <ProfileIcon className={style.white} />
+          {activeProfile && <ProfilePanel />}
         </div>
       </div>
     </header>
