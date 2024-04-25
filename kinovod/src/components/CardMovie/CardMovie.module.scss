@@ -1,12 +1,50 @@
 @use "../../style/variables.scss";
 
 .card {
+  position: relative;
   width: calc((100% - 8rem) / 5);
   min-width: 17rem;
   cursor: pointer;
 
-  @media (max-width:420px) {
+  &:hover {
+    .save_btn {
+      display: block;
+    }
+  }
+
+  @media (max-width: 420px) {
     min-width: 13rem;
+  }
+}
+
+.save_btn {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 26px;
+  height: 26px;
+  background: #272727;
+  border: none;
+  cursor: pointer;
+  outline: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    border-bottom: solid 8px transparent;
+    left: 0;
+    border-left: solid 12px #272727;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    border-bottom: solid 8px transparent;
+    right: 0;
+    border-right: solid 12px #272727;
   }
 }
 
@@ -21,7 +59,7 @@
     object-fit: cover;
   }
 
-  @media (max-width:420px) {
+  @media (max-width: 420px) {
     height: 25rem;
   }
 }
@@ -47,6 +85,10 @@
   margin-left: 0.3rem;
 }
 
-.year{
-    font-size: 1.4rem;
+.year {
+  font-size: 1.4rem;
+}
+
+.white {
+  fill: #f1f1f1;
 }
