@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import style from "./Header.module.scss";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { ReactComponent as ProfileIcon } from "../../assets/icon/profile.svg";
 import { ReactComponent as SeachIcon } from "../../assets/icon/seach.svg";
 import { ReactComponent as CloseIconMenu } from "../../assets/icon/close_humdurger.svg";
 import { ReactComponent as OpenIconMenu } from "../../assets/icon/open_humdurger.svg";
+import { ReactComponent as SettingsIcon } from "../../assets/icon/settings.svg";
 import InputSeach from "../InputSeach/InputSeach";
 import ProfilePanel from "../ProfilePanel/ProfilePanel";
 
@@ -14,14 +16,15 @@ export default function Header() {
   const [menu, setMenu] = useState(false);
   const seachRef = useRef(null);
   const profileRef = useRef(null);
+  const user = Object.keys(useSelector((state) => state.user.user)).length;
 
   useEffect(() => {
     function handleClickOutside(e) {
-      if (!seachRef.current.contains(e.target)) {
+      if (seachRef.current && !seachRef.current.contains(e.target)) {
         setActiveSeach(false);
       }
 
-      if (!profileRef.current.contains(e.target)) {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
         setActiveProfile(false);
       }
     }
@@ -79,9 +82,16 @@ export default function Header() {
           {!activeSeach && <SeachIcon onClick={clickSeach} className={`${style.search_icon} ${style.white}`} />}
           {activeSeach && <InputSeach activeSeach={activeSeach} />}
         </div>
+
         <div ref={profileRef} className={style.profile}>
-          <ProfileIcon onClick={clickProfile} className={style.white} />
-          {activeProfile && <ProfilePanel />}
+          {user ? (
+            <>
+              <ProfileIcon onClick={clickProfile} className={style.white} />
+              {activeProfile && <ProfilePanel />}
+            </>
+          ) : null}
+
+          {!user ? <SettingsIcon /> : null}
         </div>
       </div>
     </header>
