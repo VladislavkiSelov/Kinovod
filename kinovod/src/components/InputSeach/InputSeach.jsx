@@ -4,7 +4,7 @@ import { ReactComponent as SearchIcon } from "../../assets/icon/seach_input.svg"
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-export default function InputSeach({ setActiveSeach }) {
+export default function InputSeach() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 

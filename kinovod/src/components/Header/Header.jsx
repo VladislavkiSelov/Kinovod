@@ -17,9 +17,6 @@ export default function Header() {
 
   useEffect(() => {
     function handleClickOutside(e) {
-      // console.log(profileRef.current);
-      // console.log(e.target);
-      console.log(!profileRef.current.contains(e.target));
       if (!seachRef.current.contains(e.target)) {
         setActiveSeach(false);
       }
@@ -36,10 +33,20 @@ export default function Header() {
     };
   }, []);
 
-  function clickProfile(e) {
-    e.stopPropagation();
+  function clickProfile() {
     if (!activeProfile) {
       setActiveProfile(true);
+    } else {
+      setActiveProfile(false);
+    }
+  }
+
+  function clickSeach(e) {
+    e.stopPropagation();
+    if (!activeSeach) {
+      setActiveSeach(true);
+    } else {
+      setActiveSeach(false);
     }
   }
 
@@ -68,19 +75,12 @@ export default function Header() {
           {!menu && <CloseIconMenu />}
           {menu && <OpenIconMenu />}
         </div>
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
-            setActiveSeach(true);
-          }}
-          ref={seachRef}
-          className={style.seach}
-        >
-          {!activeSeach && <SeachIcon className={`${style.search_icon} ${style.white}`} />}
+        <div ref={seachRef} className={style.seach}>
+          {!activeSeach && <SeachIcon onClick={clickSeach} className={`${style.search_icon} ${style.white}`} />}
           {activeSeach && <InputSeach activeSeach={activeSeach} />}
         </div>
-        <div ref={profileRef} onClick={clickProfile} className={style.profile}>
-          <ProfileIcon className={style.white} />
+        <div ref={profileRef} className={style.profile}>
+          <ProfileIcon onClick={clickProfile} className={style.white} />
           {activeProfile && <ProfilePanel />}
         </div>
       </div>

@@ -75,6 +75,16 @@ export default function MediaContent() {
           });
         break;
 
+      case "favorites":
+        setContent([]);
+        setTitel("Избранное");
+        break;
+
+      case "history":
+        setContent([]);
+        setTitel("Просмотры");
+        break;
+
       default:
         setContent([]);
         setTitel("");
@@ -103,7 +113,7 @@ export default function MediaContent() {
     );
   }
 
-  const showSortFilter = media_content === "coming-soon" || media_content === "search";
+  const showSortFilter = media_content === "coming-soon" || media_content === "search" || media_content === "favorites";
 
   return (
     <div className={style.wrapper}>

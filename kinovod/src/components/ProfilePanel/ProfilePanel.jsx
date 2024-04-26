@@ -7,34 +7,47 @@ import { ReactComponent as HistoryIcon } from "../../assets/icon/profile_list/sv
 import { ReactComponent as RatingIcon } from "../../assets/icon/profile_list/svgexport_13.svg";
 import { ReactComponent as CommentIcon } from "../../assets/icon/profile_list/svgexport_9.svg";
 import { ReactComponent as ExitIcon } from "../../assets/icon/profile_list/svgexport_10.svg";
+import { Link } from "react-router-dom";
 
 export default function ProfilePanel() {
   return (
     <div className={style.profile_panel}>
       <ul className={style.list}>
         <li>
-          <ProfileIcon />
-          <p>Профиль</p>
+          <Link to="/profile">
+            <ProfileIcon />
+            <p>Профиль</p>
+          </Link>
         </li>
         <li>
-          <SaveIcon />
-          <p>Избранное</p>
+          <Link to="/media-content/favorites">
+            <SaveIcon />
+            <p>Избранное</p>
+          </Link>
         </li>
         <li>
-          <HistoryIcon />
-          <p>История</p>
+          <Link to="/media-content/history">
+            <HistoryIcon />
+            <p>История</p>
+          </Link>
         </li>
         <li>
-          <RatingIcon />
-          <p>Оценки</p>
+          <Link to="/ratings">
+            <RatingIcon />
+            <p>Оценки</p>
+          </Link>
         </li>
         <li>
-          <CommentIcon />
-          <p>Комментарии</p>
+          <Link to="/comments">
+            <CommentIcon />
+            <p>Комментарии</p>
+          </Link>
         </li>
         <li>
-          <ExitIcon />
-          <p>Выйти</p>
+          <Link>
+            <ExitIcon />
+            <p>Выйти</p>
+          </Link>
         </li>
       </ul>
     </div>
