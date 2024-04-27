@@ -9,14 +9,16 @@ import { ReactComponent as OpenIconMenu } from "../../assets/icon/open_humdurger
 import { ReactComponent as SettingsIcon } from "../../assets/icon/settings.svg";
 import InputSeach from "../InputSeach/InputSeach";
 import ProfilePanel from "../ProfilePanel/ProfilePanel";
+import SettingsPanel from "../SettingsPanel/SettingsPanel";
 
 export default function Header() {
   const [activeSeach, setActiveSeach] = useState(false);
-  const [activeProfile, setActiveProfile] = useState(false);
+  const [activePanel, setActivePanel] = useState(false);
   const [menu, setMenu] = useState(false);
   const seachRef = useRef(null);
   const profileRef = useRef(null);
   const user = Object.keys(useSelector((state) => state.user.user)).length;
+
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -25,7 +27,7 @@ export default function Header() {
       }
 
       if (profileRef.current && !profileRef.current.contains(e.target)) {
-        setActiveProfile(false);
+        setActivePanel(false);
       }
     }
 
@@ -36,22 +38,12 @@ export default function Header() {
     };
   }, []);
 
-  function clickProfile() {
-    if (!activeProfile) {
-      setActiveProfile(true);
-    } else {
-      setActiveProfile(false);
-    }
-  }
+  const clickProfile = () => (!activePanel ? setActivePanel(true) : setActivePanel(false));
 
-  function clickSeach(e) {
+  const clickSeach = (e) => {
     e.stopPropagation();
-    if (!activeSeach) {
-      setActiveSeach(true);
-    } else {
-      setActiveSeach(false);
-    }
-  }
+    !activeSeach ? setActiveSeach(true) : setActiveSeach(false);
+  };
 
   return (
     <header className={`${style.header} container`}>
@@ -87,11 +79,16 @@ export default function Header() {
           {user ? (
             <>
               <ProfileIcon onClick={clickProfile} className={style.white} />
-              {activeProfile && <ProfilePanel />}
+              {activePanel && <ProfilePanel />}
             </>
           ) : null}
 
-          {!user ? <SettingsIcon /> : null}
+          {!user ? (
+            <>
+              <SettingsIcon onClick={clickProfile} className={style.white} />
+              {activePanel && <SettingsPanel />}
+            </>
+          ) : null}
         </div>
       </div>
     </header>
