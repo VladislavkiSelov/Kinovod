@@ -1,21 +1,32 @@
-import React, { useRef } from 'react'
-import style from './LogInModal.module.scss'
-import { useForm } from 'react-hook-form';
-import Button from '../Button/Button';
+import React, { useRef } from "react";
+import style from "./LogInModal.module.scss";
+import { useForm } from "react-hook-form";
+import Button from "../Button/Button";
 
-export default function LogInModal({setLogInStatus}) {
+export default function LogInModal({ setLogInStatus, serFogotPasswordStataus, setRegistrationStatus }) {
   const { register, handleSubmit } = useForm();
   const ref = useRef();
 
   const onSubmit = async (data) => {
     console.log(data);
-    setLogInStatus(false);
   };
 
   function handleClick(e) {
     if (!ref.current.contains(e.target)) {
       setLogInStatus(false);
     }
+  }
+
+  function clickRegisterBtn(e) {
+    e.stopPropagation();
+    setRegistrationStatus(true);
+    setLogInStatus(false);
+  }
+
+  function clickRecoverBtn(e) {
+    e.stopPropagation();
+    serFogotPasswordStataus(true);
+    setLogInStatus(false);
   }
 
   return (
@@ -29,8 +40,12 @@ export default function LogInModal({setLogInStatus}) {
           </div>
           <Button text="Войти" classBtn={style.btn_logIn} />
         </form>
-        <h3 className={style.register_btn}>Зарегистрироваться</h3>
-        <h3 className={style.recover_btn}>Я не помню пароль</h3>
+        <button onClick={clickRegisterBtn} className={style.register_btn}>
+          Зарегистрироваться
+        </button>
+        <button onClick={clickRecoverBtn} className={style.recover_btn}>
+          Я не помню пароль
+        </button>
       </div>
       <div className={style.background}></div>
     </div>

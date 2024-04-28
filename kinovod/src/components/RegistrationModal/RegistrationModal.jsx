@@ -3,19 +3,24 @@ import style from "./RegistrationModal.module.scss";
 import { useForm } from "react-hook-form";
 import Button from "../Button/Button";
 
-export default function RegistrationModal({ setRegistrationStatus }) {
+export default function RegistrationModal({ setRegistrationStatus, setLogInStatus }) {
   const { register, handleSubmit } = useForm();
   const ref = useRef();
 
   const onSubmit = async (data) => {
     console.log(data);
-    setRegistrationStatus(false);
   };
 
   function handleClick(e) {
     if (!ref.current.contains(e.target)) {
       setRegistrationStatus(false);
     }
+  }
+
+  function clickLogInBtn(e){
+    e.stopPropagation();
+    setLogInStatus(true)
+    setRegistrationStatus(false);
   }
 
   return (
@@ -31,9 +36,7 @@ export default function RegistrationModal({ setRegistrationStatus }) {
           </div>
           <Button text="Зарегистрироваться" classBtn={style.btn_registration} />
         </form>
-        <h3 className={style.logIn}>
-          Войти
-        </h3>
+        <button onClick={clickLogInBtn} className={style.logInBtn}>Войти</button>
       </div>
       <div className={style.background}></div>
     </div>

@@ -14,6 +14,10 @@ export default function SettingsPanel() {
   const clickRegistration = () => (registrationStataus ? setRegistrationStatus(false) : setRegistrationStatus(true));
   const clickFogotPassword = () => (fogotPasswordStataus ? serFogotPasswordStataus(false) : serFogotPasswordStataus(true));
 
+  const updateFogotPasswordStataus = (value) => serFogotPasswordStataus(value);
+  const updateLogInStatus = (value) => setLogInStatus(value);
+  const updateRegistrationStatus = (value) => setRegistrationStatus(value);
+
   return (
     <>
       <div className={style.panel}>
@@ -22,9 +26,21 @@ export default function SettingsPanel() {
         <p onClick={clickRegistration}>Зарегистрироваться</p>
         <div className={style.footer}></div>
       </div>
-      {registrationStataus && <RegistrationModal setRegistrationStatus={(value) => setRegistrationStatus(value)} />}
-      {logInStatus && <LogInModal setLogInStatus={(value) => setLogInStatus(value)} />}
-      {fogotPasswordStataus && <PasswordRecovery serFogotPasswordStataus={(value) => serFogotPasswordStataus(value)} />}
+      {registrationStataus && <RegistrationModal setLogInStatus={updateLogInStatus} setRegistrationStatus={updateRegistrationStatus} />}
+      {logInStatus && (
+        <LogInModal
+          serFogotPasswordStataus={updateFogotPasswordStataus}
+          setRegistrationStatus={updateRegistrationStatus}
+          setLogInStatus={(value) => setLogInStatus(value)}
+        />
+      )}
+      {fogotPasswordStataus && (
+        <PasswordRecovery
+          setLogInStatus={(value) => setLogInStatus(value)}
+          setRegistrationStatus={updateRegistrationStatus}
+          serFogotPasswordStataus={updateFogotPasswordStataus}
+        />
+      )}
     </>
   );
 }

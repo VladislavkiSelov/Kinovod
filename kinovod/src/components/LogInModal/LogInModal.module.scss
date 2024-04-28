@@ -36,6 +36,10 @@
 }
 
 .register_btn {
+  display: block;
+  background: none;
+  border: none;
+  cursor: pointer;
   line-height: 2rem;
   color: #999999;
   border-bottom: 1px dashed #999999;
