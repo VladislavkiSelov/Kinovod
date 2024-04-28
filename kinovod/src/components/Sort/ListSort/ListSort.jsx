@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 export default function ListSort() {
   const [list, setList] = useState([]);
-  const { media_content, filter_params } = useParams();
+  const { media_content, params } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,16 +13,16 @@ export default function ListSort() {
   }, []);
 
   function handleClick(e) {
-    function getParamsFilter() {
-      const params = new URLSearchParams(filter_params);
-      const paramsObject = Object.fromEntries(params.entries());
+    function getParams(params) {
+      const paramsURL = new URLSearchParams(params);
+      const paramsObject = Object.fromEntries(paramsURL.entries());
       return paramsObject;
     }
 
-    const params = getParamsFilter();
+    const paramsObject = getParams(params);
     const entry = Object.entries(list).find(([key, val]) => val === e.target.textContent);
-    params.sort_by = entry[0];
-    const queryParams = new URLSearchParams(params);
+    paramsObject.sort_by = entry[0];
+    const queryParams = new URLSearchParams(paramsObject);
 
     navigate(`/media-content/${media_content}/params/${queryParams}`);
   }

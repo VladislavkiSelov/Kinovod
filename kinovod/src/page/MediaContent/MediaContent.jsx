@@ -27,7 +27,6 @@ export default function MediaContent() {
     }
     const queryParams = getParamsFilter();
 
-
     setLoading(true);
 
     switch (media_content) {
@@ -66,18 +65,24 @@ export default function MediaContent() {
         ])
           .then(([movie, tv, multi]) => {
             const movies = addTypeMediaContent(movie.results, "movie");
-            const tvs = addTypeMediaContent(movie.results, "serial");
-            const multis = addTypeMediaContent(movie.results, "movie");
+            const tvs = addTypeMediaContent(tv.results, "serial");
+            const multis = addTypeMediaContent(multi.results, "movie");
             //add type;
-            if ([...movie.results, ...tv.results, ...multi.results].length) {
-              setContent([...movies, ...tvs, ...multis]);
-            } else {
-              navigate(-1);
-            }
+            setContent([...movies, ...tvs, ...multis]);
           })
           .catch((error) => {
             console.error("An error occurred:", error);
           });
+        break;
+
+      case "favorites":
+        setContent([]);
+        setTitel("Избранное");
+        break;
+
+      case "history":
+        setContent([]);
+        setTitel("Просмотры");
         break;
 
       default:
@@ -108,13 +113,15 @@ export default function MediaContent() {
     );
   }
 
+  const showSortFilter = media_content === "coming-soon" || media_content === "search" || media_content === "favorites";
+
   return (
     <div className={style.wrapper}>
       <div className={style.header}>
         <h3 className={style.titel}>{titel}</h3>
-        {media_content !== "coming-soon" && (
+        {!showSortFilter && (
           <div className={style.filter}>
-            <Filter/>
+            <Filter />
             <Sort />
           </div>
         )}

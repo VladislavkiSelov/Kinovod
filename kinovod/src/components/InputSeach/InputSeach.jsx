@@ -4,7 +4,7 @@ import { ReactComponent as SearchIcon } from "../../assets/icon/seach_input.svg"
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-export default function InputSeach({ setActiveSeach }) {
+export default function InputSeach() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
@@ -15,7 +15,13 @@ export default function InputSeach({ setActiveSeach }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={style.wrapper}>
-      <input {...register("search")} className={style.seach} placeholder="Поиск" />
+      <input
+        {...register("search", {
+          minLength: 2,
+        })}
+        className={style.seach}
+        placeholder="Поиск"
+      />
       <div className={style.wrapper_btn}>
         <SearchIcon className={`${style.white} ${style.seach_icon}`} />
         <input type="submit" className={style.transparent_button} />
