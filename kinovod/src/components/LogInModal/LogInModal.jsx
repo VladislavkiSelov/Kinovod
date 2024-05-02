@@ -1,10 +1,13 @@
 import React, { useRef } from "react";
-import axios from "axios";
 import style from "./LogInModal.module.scss";
 import { useForm } from "react-hook-form";
+import { useDispatch} from "react-redux";
 import Button from "../Button/Button";
+import { fetchUser } from "../../store/slice/userSlice";
 
 export default function LogInModal({ setLogInStatus, serFogotPasswordStataus, setRegistrationStatus }) {
+  const dispatch = useDispatch();
+  
   const {
     register,
     handleSubmit,
@@ -16,17 +19,10 @@ export default function LogInModal({ setLogInStatus, serFogotPasswordStataus, se
   const passwordRegex = /^(?=.*\d).{6,}$/;
 
   const onSubmit = async (data) => {
+    const url = `http://localhost:7000/login`;
     const params = { email: data.email, password: data.password };
-
-    axios
-      .get(`http://localhost:7000/user`, {
-        params,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    const token = await dispatch(fetchUser({ url, params }));
+    localStorage.setItem("user", JSON.stringify(token.payload));
   };
 
   function handleClick(e) {

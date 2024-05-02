@@ -17,8 +17,16 @@ export default function Header() {
   const [menu, setMenu] = useState(false);
   const seachRef = useRef(null);
   const profileRef = useRef(null);
-  const user = Object.keys(useSelector((state) => state.user.user)).length;
+  const [user, setUser] = useState(false);
+  const userState = useSelector((state) => state.user.user);
 
+  useEffect(() => {
+    if (Object.keys(userState).length) {
+      setUser(true);
+    } else {
+      setUser(false);
+    }
+  }, [userState]);
 
   useEffect(() => {
     function handleClickOutside(e) {

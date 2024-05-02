@@ -8,8 +8,17 @@ import { ReactComponent as RatingIcon } from "../../assets/icon/profile_list/svg
 import { ReactComponent as CommentIcon } from "../../assets/icon/profile_list/svgexport_9.svg";
 import { ReactComponent as ExitIcon } from "../../assets/icon/profile_list/svgexport_10.svg";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/slice/userSlice";
 
 export default function ProfilePanel() {
+  const dispatch = useDispatch();
+
+  function exitProfile() {
+    dispatch(setUser({}));
+    localStorage.removeItem("user");
+  }
+
   return (
     <div className={style.profile_panel}>
       <ul className={style.list}>
@@ -43,11 +52,9 @@ export default function ProfilePanel() {
             <p>Комментарии</p>
           </Link>
         </li>
-        <li>
-          <Link>
-            <ExitIcon />
-            <p>Выйти</p>
-          </Link>
+        <li className={style.exit} onClick={exitProfile}>
+          <ExitIcon />
+          <p>Выйти</p>
         </li>
       </ul>
     </div>

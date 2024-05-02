@@ -3,6 +3,8 @@ import style from "./RegistrationModal.module.scss";
 import { useForm } from "react-hook-form";
 import Button from "../Button/Button";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/slice/userSlice";
 
 export default function RegistrationModal({ setRegistrationStatus, setLogInStatus }) {
   const {
@@ -13,6 +15,7 @@ export default function RegistrationModal({ setRegistrationStatus, setLogInStatu
     reset,
   } = useForm();
   const ref = useRef();
+  const dispatch = useDispatch();
 
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/;
   const passwordRegex = /^(?=.*\d).{6,}$/;
@@ -21,12 +24,15 @@ export default function RegistrationModal({ setRegistrationStatus, setLogInStatu
     const body = { username: data.name, email: data.email, password: data.password };
 
     axios
-      .post(`http://localhost:7000/user`, body, {
+      .post(`http://localhost:7000/register`, body, {
         headers: {
           "Content-Type": "application/json",
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        dispatch(setUser(res.data));
+        localStorage.setItem("user", JSON.stringify(res.data));
+      })
       .catch((err) => console.log(err));
     reset();
   };
