@@ -14,11 +14,11 @@ export default function Layout() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const updateToken = async () => {
-      const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user"));
 
-      if (user?.token) {
-        const url = `http://localhost:7000/token`;
+    const updateToken = async () => {
+      if (user && user.token) {
+        const url = `http://localhost:7000/auth/token`;
         const params = { id: user.id };
         const token = await dispatch(fetchUser({ url, params }));
         localStorage.setItem("user", JSON.stringify(token.payload));
@@ -27,9 +27,10 @@ export default function Layout() {
 
     updateToken();
 
-    const intervalId = setInterval(updateToken, 1.5 * 60 * 60 * 1000);
-
-    return () => clearInterval(intervalId);
+    if (user && user.token) {
+      const intervalId = setInterval(updateToken, 1.5 * 60 * 60 * 1000);
+      return () => clearInterval(intervalId);
+    }
   }, []);
 
   return (

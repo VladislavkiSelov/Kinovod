@@ -24,7 +24,7 @@ export default function RegistrationModal({ setRegistrationStatus, setLogInStatu
     const body = { username: data.name, email: data.email, password: data.password };
 
     axios
-      .post(`http://localhost:7000/register`, body, {
+      .post(`http://localhost:7000/auth/register`, body, {
         headers: {
           "Content-Type": "application/json",
         },

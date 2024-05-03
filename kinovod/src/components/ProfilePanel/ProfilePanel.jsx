@@ -7,16 +7,18 @@ import { ReactComponent as HistoryIcon } from "../../assets/icon/profile_list/sv
 import { ReactComponent as RatingIcon } from "../../assets/icon/profile_list/svgexport_13.svg";
 import { ReactComponent as CommentIcon } from "../../assets/icon/profile_list/svgexport_9.svg";
 import { ReactComponent as ExitIcon } from "../../assets/icon/profile_list/svgexport_10.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/slice/userSlice";
 
 export default function ProfilePanel() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function exitProfile() {
     dispatch(setUser({}));
     localStorage.removeItem("user");
+    navigate("/");
   }
 
   return (
