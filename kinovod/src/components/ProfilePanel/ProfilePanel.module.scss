@@ -18,16 +18,27 @@
 }
 
 .list {
+  li {
+    &:nth-last-child(1) {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 8px 20px;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    &:hover {
+      background-color: variables.$bg-hover;
+    }
+  }
+
   a {
     display: flex;
     align-items: center;
     padding: 8px 20px;
     gap: 1rem;
     margin-bottom: 1rem;
-
-    &:hover{
-      background-color: variables.$bg-hover;
-    }
   }
 
   p {

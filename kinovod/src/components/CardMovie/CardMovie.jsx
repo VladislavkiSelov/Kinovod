@@ -4,16 +4,45 @@ import { ReactComponent as IconStar } from "../../assets/icon/raiting.svg";
 import { ReactComponent as IconSaveMovie } from "../../assets/icon/add_save.svg";
 import { ReactComponent as IconDeleteMovie } from "../../assets/icon/delete_save.svg";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import noImg from "../../assets/pic/no_img.jpg";
+import { useSelector } from "react-redux";
+import { clientMyDB } from "../../api/mydb";
 
-export default function CardMovie(props) {
+export default function CardMovie(props, statusSave = false) {
   const { item } = props;
   const navigate = useNavigate();
-  const [save, setSave] = useState(false);
+  const { media_content } = useParams();
+  const [save, setSave] = useState(props.statusSave);
+  const userState = useSelector((state) => state.user.user);
 
   function handelClick() {
     navigate(`/movie/${item.id}/type/${item.type}`);
+  }
+
+  const body = {
+    movie_id: item.id,
+    user_id: userState.id,
+    type: item.type,
+  };
+
+  async function clickSaveMovie() {
+    if (!save) {
+      await clientMyDB
+        .addMovieFavorite({ path: "movie/favorite", token: userState.token, body })
+        .then(() => setSave(true))
+        .catch(() => console.log("Ошибка добавления фильма в избранное"));
+    } else {
+      await clientMyDB
+        .deleteMovieFavorite({ path: "movie/favorite", token: userState.token, params: { movie_id: item.id, user_id: userState.id } })
+        .then(() => {
+          setSave(false);
+          if (media_content === "favorites") {
+            navigate("/media-content/favorites");
+          }
+        })
+        .catch(() => console.log("Ошибка удаления фильма из избранного"));
+    }
   }
 
   return (
@@ -29,7 +58,7 @@ export default function CardMovie(props) {
           <span className={style.year}>{moment(item.release_date || item.first_air_date).format("YYYY")}</span>
         </div>
       </div>
-      <button onClick={() => (!save ? setSave(true) : setSave(false))} className={style.save_btn}>
+      <button onClick={clickSaveMovie} className={style.save_btn}>
         {!save ? <IconSaveMovie className={style.white} /> : <IconDeleteMovie className={style.white} />}
       </button>
     </div>

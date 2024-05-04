@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import style from "./MediaContent.module.scss";
 import { client } from "../../api/tndb";
+import { clientMyDB } from "../../api/mydb";
 import CardMovie from "../../components/CardMovie/CardMovie";
-import { addTypeMediaContent } from "../../helpFunction/helpFunction";
+import { addTypeMediaContent, getFavoriteMovieTMDB } from "../../helpFunction/helpFunction";
 import Filter from "../../components/Filter/Filter";
 import Sort from "../../components/Sort/Sort";
 import MyPagination from "../../components/MyPagination/MyPagination";
 import { Oval } from "react-loader-spinner";
+import { useSelector } from "react-redux";
 
 export default function MediaContent() {
   const { media_content, params } = useParams();
@@ -17,6 +19,7 @@ export default function MediaContent() {
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const userState = useSelector((state) => state.user.user);
 
   useEffect(() => {
     function getParamsFilter() {
@@ -25,6 +28,7 @@ export default function MediaContent() {
       paramsObject.page = currentPage;
       return new URLSearchParams(paramsObject);
     }
+
     const queryParams = getParamsFilter();
 
     setLoading(true);
@@ -67,7 +71,6 @@ export default function MediaContent() {
             const movies = addTypeMediaContent(movie.results, "movie");
             const tvs = addTypeMediaContent(tv.results, "serial");
             const multis = addTypeMediaContent(multi.results, "movie");
-            //add type;
             setContent([...movies, ...tvs, ...multis]);
           })
           .catch((error) => {
@@ -76,15 +79,15 @@ export default function MediaContent() {
         break;
 
       case "favorites":
-        setContent([]);
-        setTitel("Избранное");
+        clientMyDB
+          .getMovieFavorite("movie/favorite", userState.token, { user_id: userState.id })
+          .then((res) => getFavoriteMovieTMDB(res.data.movies))
+          .then((res) => {
+            setContent(res || []);
+            setTitel("Избраное");
+          });
         break;
-
-      case "history":
-        setContent([]);
-        setTitel("Просмотры");
-        break;
-
+        
       default:
         setContent([]);
         setTitel("");
@@ -114,6 +117,7 @@ export default function MediaContent() {
   }
 
   const showSortFilter = media_content === "coming-soon" || media_content === "search" || media_content === "favorites";
+  const statusSave = media_content === "favorites" ? true : false;
 
   return (
     <div className={style.wrapper}>
@@ -128,7 +132,7 @@ export default function MediaContent() {
       </div>
       <div className={style.content}>
         {content.map((item, i) => {
-          return <CardMovie key={i} item={item} />;
+          return <CardMovie statusSave={statusSave} key={i} item={item} />;
         })}
       </div>
       {totalPages && <MyPagination totalPages={totalPages} handlePageChange={handlePageChange} />}
