@@ -1,10 +1,22 @@
 import axios from "axios";
-const urlTMDB = `https://api.themoviedb.org`;
+import { tmdbConfig } from "../config";
 
 async function getApiTMDB(path) {
   try {
-    const result = await axios.get(`${urlTMDB}/${path}`, {
-      headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN_TMDB}`, "Content-Type": "application/json" },
+    const result = await axios.get(`${tmdbConfig.URL}/${path}`, {
+      headers: { Authorization: `Bearer ${tmdbConfig.token}`, "Content-Type": "application/json" },
+    });
+    return result.data;
+  } catch (error) {
+    console.error("Error:", error);
+    return [];
+  }
+}
+
+async function postApiTMDB({ path, body }) {
+  try {
+    const result = await axios.post(`${tmdbConfig.URL}/${path}`, body, {
+      headers: { Authorization: `Bearer ${tmdbConfig.token}`, "Content-Type": "application/json" },
     });
     return result.data;
   } catch (error) {
@@ -49,5 +61,11 @@ export const client = {
   },
   async getSearchListMovie(path) {
     return await getApiTMDB(path);
+  },
+  async getMovieFavorite(path) {
+    return await getApiTMDB(path);
+  },
+  async addRating({ path, body }) {
+    return await postApiTMDB({ path, body });
   },
 };

@@ -5,6 +5,7 @@ import Button from "../Button/Button";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/slice/userSlice";
+import { mydbConfig } from "../../config";
 
 export default function RegistrationModal({ setRegistrationStatus, setLogInStatus }) {
   const {
@@ -22,9 +23,10 @@ export default function RegistrationModal({ setRegistrationStatus, setLogInStatu
 
   const onSubmit = async (data) => {
     const body = { username: data.name, email: data.email, password: data.password };
+    const url = `${mydbConfig.URL}/auth/register`;
 
     axios
-      .post(`http://localhost:7000/auth/register`, body, {
+      .post(url, body, {
         headers: {
           "Content-Type": "application/json",
         },

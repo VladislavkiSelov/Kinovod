@@ -11,6 +11,8 @@ import AddComment from "../../components/AddComment/AddComment";
 import Button from "../../components/Button/Button";
 import noImg from "../../assets/pic/no_img.jpg";
 import { Oval } from "react-loader-spinner";
+import { clientMyDB } from "../../api/mydb";
+import { useSelector } from "react-redux";
 
 export default function MoviePage() {
   const { movie_id, type } = useParams();
@@ -21,6 +23,7 @@ export default function MoviePage() {
   const [rating, setRating] = useState(0);
   const [loading, setLoading] = useState(false);
   const trailerUrl = `https://www.youtube.com/embed/${trailer?.key}`;
+  const userState = useSelector((state) => state.user.user);
 
   useEffect(() => {
     switch (type) {
@@ -58,10 +61,23 @@ export default function MoviePage() {
     return { hours, minutes };
   }
 
-  const handleRatingChange = (event, newValue) => {
-    console.log(newValue);
-    setRating(newValue);
-  };
+  async function handleRatingChange(event, newValue) {
+    client.addRating({ path: `3/movie/${movie_id}/rating`, body: { value: newValue } }).then(() => {
+      setRating(newValue);
+    });
+  }
+
+  async function clickBtnSave() {
+    const body = {
+      movie_id,
+      user_id: userState.id,
+      type,
+    };
+
+    await clientMyDB
+      .addMovieFavorite({ path: "movie/favorite", token: userState.token, body })
+      .catch(() => console.log("Ошибка добавления фильма в избранное"));
+  }
 
   if (!loading) {
     return (
@@ -164,9 +180,8 @@ export default function MoviePage() {
         <div className={style.video_container}>
           <iframe className={style.trailer} src={trailerUrl} frameBorder="0" allowFullScreen></iframe>
         </div>
-        <Button text="В избранное" />
+        <Button handelClick={clickBtnSave} text="В избранное" />
       </div>
-      <AddComment />
     </div>
   );
 }

@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
 import style from "./ProfilePage.module.scss";
-import avatarDefault from "../../assets/icon/avatar.svg";
 
 import Button from "../../components/Button/Button";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { mydbConfig } from "../../config";
 
 const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/;
 const passwordRegex = /^(?=.*\d).{6,}$/;
 
 export default function ProfilePage() {
+  const userState = useSelector((state) => state.user.user);
   const {
     register,
     handleSubmit,
@@ -19,15 +21,14 @@ export default function ProfilePage() {
   } = useForm();
 
   useEffect(() => {
-    const url = `http://localhost:7000/user`;
-    const user = JSON.parse(localStorage.getItem("user"));
-    const params = { id: user.id };
+    const url = `${mydbConfig.URL}/user`;
+    const params = { id: userState.id };
 
     axios
       .get(url, {
         params,
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${userState.token}`,
           "Content-Type": "application/json",
         },
       })
@@ -38,9 +39,8 @@ export default function ProfilePage() {
   }, []);
 
   const onSubmit = async (data) => {
-    const url = `http://localhost:7000/user/edit`;
-    const user = JSON.parse(localStorage.getItem("user"));
-    const params = { id: user.id };
+    const url = `${mydbConfig.URL}/user/edit`;
+    const params = { id: userState.id };
     const { username, email, password } = data;
 
     const newObj = Object.fromEntries(Object.entries({ username, email, password }).filter(([key, value]) => value !== ""));
@@ -49,7 +49,7 @@ export default function ProfilePage() {
       .patch(url, newObj, {
         params,
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${userState.token}`,
           "Content-Type": "application/json",
         },
       })
@@ -64,12 +64,6 @@ export default function ProfilePage() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={style.profile_page}>
       <h2>Профиль</h2>
-      <div className={style.wrapper_avatar}>
-        <div className={style.avatar_preview}>
-          <img src={avatarDefault} alt="avatar" />
-        </div>
-        <Button type="button" text="Выбрать" />
-      </div>
       <label className={style.email}>
         <h3>Электронная почта</h3>
         <input

@@ -8,6 +8,7 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "../../store/slice/userSlice";
+import { mydbConfig } from "../../config";
 
 export default function Layout() {
   const location = useLocation();
@@ -18,7 +19,7 @@ export default function Layout() {
 
     const updateToken = async () => {
       if (user && user.token) {
-        const url = `http://localhost:7000/auth/token`;
+        const url = `${mydbConfig.URL}/auth/token`;
         const params = { id: user.id };
         const token = await dispatch(fetchUser({ url, params }));
         localStorage.setItem("user", JSON.stringify(token.payload));

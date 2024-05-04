@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Button from "../Button/Button";
 import { fetchUser } from "../../store/slice/userSlice";
+import { mydbConfig } from "../../config";
 
 export default function LogInModal({ setLogInStatus, serFogotPasswordStataus, setRegistrationStatus }) {
   const dispatch = useDispatch();
@@ -19,16 +20,16 @@ export default function LogInModal({ setLogInStatus, serFogotPasswordStataus, se
   const passwordRegex = /^(?=.*\d).{6,}$/;
 
   const onSubmit = async (data) => {
-    const url = `http://localhost:7000/auth/login`;
+    const url = `${mydbConfig.URL}/auth/login`;
     const params = { email: data.email, password: data.password };
     const token = await dispatch(fetchUser({ url, params }));
 
     if (!token.payload) {
       return;
     }
-    
+
     localStorage.setItem("user", JSON.stringify(token.payload));
-    setLogInStatus(false)
+    setLogInStatus(false);
   };
 
   function handleClick(e) {
