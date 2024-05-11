@@ -9,6 +9,7 @@ import Footer from "../../components/Footer/Footer";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "../../store/slice/userSlice";
 import { mydbConfig } from "../../config";
+import Auth from "../../components/Auth/Auth";
 
 export default function Layout() {
   const location = useLocation();
@@ -37,6 +38,7 @@ export default function Layout() {
   return (
     <div className="wrapper">
       <Header />
+      <Auth/>
       <TransitionGroup>
         <CSSTransition key={location.key} classNames="fade" timeout={500}>
           <section className={`container ${style.section_main}`}>

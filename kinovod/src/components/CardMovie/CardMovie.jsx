@@ -6,12 +6,14 @@ import { ReactComponent as IconDeleteMovie } from "../../assets/icon/delete_save
 import moment from "moment";
 import { useNavigate, useParams } from "react-router-dom";
 import noImg from "../../assets/pic/no_img.jpg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clientMyDB } from "../../api/mydb";
+import { setStatusLogIn } from "../../store/slice/logInSlice";
 
 export default function CardMovie(props, statusSave = false) {
   const { item } = props;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { media_content } = useParams();
   const [save, setSave] = useState(props.statusSave);
   const userState = useSelector((state) => state.user.user);
@@ -27,6 +29,11 @@ export default function CardMovie(props, statusSave = false) {
   };
 
   async function clickSaveMovie() {
+    if (!!!userState.token) {
+      dispatch(setStatusLogIn(true));
+      return
+    }
+
     if (!save) {
       await clientMyDB
         .addMovieFavorite({ path: "movie/favorite", token: userState.token, body })

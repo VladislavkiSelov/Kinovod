@@ -8,7 +8,7 @@ async function getApiTMDB(path) {
     });
     return result.data;
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error:", error.message);
     return [];
   }
 }

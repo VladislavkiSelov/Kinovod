@@ -14,6 +14,7 @@ import MediaContent from "./page/MediaContent/MediaContent";
 import ProfilePage from "./page/ProfilePage/ProfilePage";
 import RatingsPage from "./page/RatingsPage/RatingsPage";
 import CommentsPage from "./page/CommentsPage/CommentsPage";
+import ResetPassword from "./page/ResetPassword/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "/movie/:movie_id/type/:type", element: <MoviePage /> },
       { path: "/media-content/:media_content", element: <MediaContent /> },
       { path: "/media-content/:media_content/params/:params", element: <MediaContent /> },
+      { path: "/reset_password/:token", element: <ResetPassword /> },
     ],
   },
 ]);

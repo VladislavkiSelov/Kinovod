@@ -7,7 +7,6 @@ import moment from "moment";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import StarIcon from "@mui/icons-material/Star";
-import AddComment from "../../components/AddComment/AddComment";
 import Button from "../../components/Button/Button";
 import noImg from "../../assets/pic/no_img.jpg";
 import { Oval } from "react-loader-spinner";
@@ -50,8 +49,10 @@ export default function MoviePage() {
         break;
     }
 
-    client.getActors(`3/movie/${movie_id}/credits?language=ru`).then((res) => setActors(res.cast));
-    client.getDirectors(`3/movie/${movie_id}/credits?language=ru`).then((res) => setDirectors(res.crew));
+    client.getActors(`3/movie/${movie_id}/credits?language=ru`).then((res) => {
+      setDirectors(res.crew);
+      setActors(res.cast);
+    });
   }, [movie_id, type]);
 
   function transformationMinutes(runtime) {
@@ -139,30 +140,45 @@ export default function MoviePage() {
               </div>
             </div>
           )}
-          <div>
-            <h3>Жанр</h3>
-            <div className={style.list_genres}>
-              {movie.genres?.map((el, index) => (
-                <span key={index}>{el.name && el.name[0].toUpperCase() + el.name.slice(1) + ", "}</span>
-              ))}
+
+          {!!movie.genres && (
+            <div>
+              <h3>Жанр</h3>
+              <div className={style.list_genres}>
+                {movie.genres.map((el, index) => (
+                  <span key={index}>{el.name && el.name[0].toUpperCase() + el.name.slice(1) + ", "}</span>
+                ))}
+              </div>
             </div>
-          </div>
-          <div>
+          )}
+          {/* {<div>
             <h3>Режиссер</h3>
             <div>
-              {movie.production_countries?.map((el) => (
+              {movie.production_countries.map((el) => (
                 <span key={el.name}>{el.name}</span>
               ))}
             </div>
-          </div>
-          <div>
-            <h3>Актеры</h3>
-            <div className={style.list_actors}>{actors && actors.slice(0, 10)?.map((el) => <span key={el.name}>{el.name + ", "}</span>)}</div>
-          </div>
-          <div>
-            <h3>Режиссер</h3>
-            <div>{actors && directors.slice(0, 1)?.map((el) => <span key={el.name}>{el.name}</span>)}</div>
-          </div>
+          </div>} */}
+          {!!actors && (
+            <div>
+              <h3>Актеры</h3>
+              <div className={style.list_actors}>
+                {actors.slice(0, 10)?.map((el) => (
+                  <span key={el.name}>{el.name + ", "}</span>
+                ))}
+              </div>
+            </div>
+          )}
+          {!!directors && (
+            <div>
+              <h3>Режиссер</h3>
+              <div>
+                {directors.slice(0, 1).map((el) => (
+                  <span key={el.name}>{el.name}</span>
+                ))}
+              </div>
+            </div>
+          )}
           {type === "movie" && (
             <div>
               <h3>Длительность</h3>

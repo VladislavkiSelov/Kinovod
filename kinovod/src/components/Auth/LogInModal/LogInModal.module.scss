@@ -13,7 +13,7 @@
   z-index: 99;
 }
 
-.registration {
+.logIn {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -35,10 +35,10 @@
   }
 }
 
-.logInBtn {
+.register_btn {
+  display: block;
   background: none;
   border: none;
-  cursor: pointer;
   line-height: 2rem;
   color: #999999;
   border-bottom: 1px dashed #999999;
@@ -47,11 +47,16 @@
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.recover_btn {
+  @extend .register_btn;
 }
 
 .box_input {
   width: 100%;
-
   input {
     font-size: 1.6rem;
     color: #f1f1f1;
@@ -64,14 +69,14 @@
   }
 }
 
-.registration_form {
+.logIn_form {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 2rem;
 }
 
-.btn_registration {
+.btn_logIn {
   border-radius: 28px !important;
   padding: 0.8rem 1.4rem !important;
   width: 100% !important;

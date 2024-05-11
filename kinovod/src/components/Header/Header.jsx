@@ -54,51 +54,53 @@ export default function Header() {
   };
 
   return (
-    <header className={`${style.header} container`}>
-      <nav className={`${style.navigation_left}`}>
-        <div className={style.logo}>
-          <Link to="/">
-            <img src="/img/icon/logo.png" alt="logo" />
-          </Link>
-        </div>
-        <ul onClick={() => setMenu(false)} className={`${style.navigation_list} ${menu && style.navigation_list_active}`}>
-          <li>
-            <Link to="media-content/movie/params/language=ru">Фильмы</Link>
-          </li>
-          <li>
-            <Link to="media-content/serial/params/language=ru">Сериалы</Link>
-          </li>
-          <li>
-            <Link to="media-content/coming-soon/params/language=ru">Скоро</Link>
-          </li>
-        </ul>
-      </nav>
-      <div className={`${style.navigation_right}`}>
-        <div onClick={() => (!menu ? setMenu(true) : setMenu(false))} className={style.menu}>
-          {!menu && <CloseIconMenu />}
-          {menu && <OpenIconMenu />}
-        </div>
-        <div ref={seachRef} className={style.seach}>
-          {!activeSeach && <SeachIcon onClick={clickSeach} className={`${style.search_icon} ${style.white}`} />}
-          {activeSeach && <InputSeach activeSeach={activeSeach} />}
-        </div>
+    <>
+      <header className={`${style.header} container`}>
+        <nav className={`${style.navigation_left}`}>
+          <div className={style.logo}>
+            <Link to="/">
+              <img src="/img/icon/logo.png" alt="logo" />
+            </Link>
+          </div>
+          <ul onClick={() => setMenu(false)} className={`${style.navigation_list} ${menu && style.navigation_list_active}`}>
+            <li>
+              <Link to="media-content/movie/params/language=ru">Фильмы</Link>
+            </li>
+            <li>
+              <Link to="media-content/serial/params/language=ru">Сериалы</Link>
+            </li>
+            <li>
+              <Link to="media-content/coming-soon/params/language=ru">Скоро</Link>
+            </li>
+          </ul>
+        </nav>
+        <div className={`${style.navigation_right}`}>
+          <div onClick={() => (!menu ? setMenu(true) : setMenu(false))} className={style.menu}>
+            {!menu && <CloseIconMenu />}
+            {menu && <OpenIconMenu />}
+          </div>
+          <div ref={seachRef} className={style.seach}>
+            {!activeSeach && <SeachIcon onClick={clickSeach} className={`${style.search_icon} ${style.white}`} />}
+            {activeSeach && <InputSeach activeSeach={activeSeach} />}
+          </div>
 
-        <div ref={profileRef} className={style.profile}>
-          {user ? (
-            <>
-              <ProfileIcon onClick={clickProfile} className={style.white} />
-              {activePanel && <ProfilePanel />}
-            </>
-          ) : null}
+          <div ref={profileRef} className={style.profile}>
+            {user ? (
+              <>
+                <ProfileIcon onClick={clickProfile} className={style.white} />
+                {activePanel && <ProfilePanel />}
+              </>
+            ) : null}
 
-          {!user ? (
-            <>
-              <SettingsIcon onClick={clickProfile} className={style.white} />
-              {activePanel && <SettingsPanel />}
-            </>
-          ) : null}
+            {!user ? (
+              <>
+                <SettingsIcon onClick={clickProfile} className={style.white} />
+                {activePanel && <SettingsPanel />}
+              </>
+            ) : null}
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }

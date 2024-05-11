@@ -1,22 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import ButtonAuth from "../ButtonAuth/ButtonAuth";
 import style from "./SettingsPanel.module.scss";
-import RegistrationModal from "../RegistrationModal/RegistrationModal";
-import PasswordRecovery from "../PasswordRecovery/PasswordRecovery";
-import LogInModal from "../LogInModal/LogInModal";
+import { setStatusLogIn } from "../../store/slice/logInSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setStatusRegister } from "../../store/slice/registerSlice";
+import { setStatusPasswordRecovery } from "../../store/slice/passwordRecovery";
 
 export default function SettingsPanel() {
-  const [logInStatus, setLogInStatus] = useState(false);
-  const [registrationStataus, setRegistrationStatus] = useState(false);
-  const [fogotPasswordStataus, serFogotPasswordStataus] = useState(false);
+  const dispatch = useDispatch();
+  const logInStatus = useSelector((state) => state.logIn.status);
+  const registrationStataus = useSelector((state) => state.register.status);
+  const fogotPasswordStataus = useSelector((state) => state.passwordRecovery.status);
 
-  const clickLogIn = () => (logInStatus ? setLogInStatus(false) : setLogInStatus(true));
-  const clickRegistration = () => (registrationStataus ? setRegistrationStatus(false) : setRegistrationStatus(true));
-  const clickFogotPassword = () => (fogotPasswordStataus ? serFogotPasswordStataus(false) : serFogotPasswordStataus(true));
-
-  const updateFogotPasswordStataus = (value) => serFogotPasswordStataus(value);
-  const updateLogInStatus = (value) => setLogInStatus(value);
-  const updateRegistrationStatus = (value) => setRegistrationStatus(value);
+  const clickLogIn = () => (logInStatus ? dispatch(setStatusLogIn(false)) : dispatch(setStatusLogIn(true)));
+  const clickRegistration = () => (registrationStataus ? dispatch(setStatusRegister(false)) : dispatch(setStatusRegister(true)));
+  const clickFogotPassword = () => (fogotPasswordStataus ? dispatch(setStatusPasswordRecovery(false)) : dispatch(setStatusPasswordRecovery(true)));
 
   return (
     <>
@@ -26,21 +24,6 @@ export default function SettingsPanel() {
         <p onClick={clickRegistration}>Зарегистрироваться</p>
         <div className={style.footer}></div>
       </div>
-      {registrationStataus && <RegistrationModal setLogInStatus={updateLogInStatus} setRegistrationStatus={updateRegistrationStatus} />}
-      {logInStatus && (
-        <LogInModal
-          serFogotPasswordStataus={updateFogotPasswordStataus}
-          setRegistrationStatus={updateRegistrationStatus}
-          setLogInStatus={(value) => setLogInStatus(value)}
-        />
-      )}
-      {fogotPasswordStataus && (
-        <PasswordRecovery
-          setLogInStatus={(value) => setLogInStatus(value)}
-          setRegistrationStatus={updateRegistrationStatus}
-          serFogotPasswordStataus={updateFogotPasswordStataus}
-        />
-      )}
     </>
   );
 }
