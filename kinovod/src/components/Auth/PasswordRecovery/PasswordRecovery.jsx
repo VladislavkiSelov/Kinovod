@@ -1,9 +1,14 @@
 import React, { useRef } from "react";
 import style from "./PasswordRecovery.module.scss";
 import { useForm } from "react-hook-form";
-import Button from "../Button/Button";
+import Button from "../../Button/Button";
+import { setStatusLogIn } from "../../../store/slice/logInSlice";
+import { useDispatch } from "react-redux";
+import { setStatusPasswordRecovery } from "../../../store/slice/passwordRecovery";
+import { setStatusRegister } from "../../../store/slice/registerSlice";
 
-export default function PasswordRecovery({ serFogotPasswordStataus, setRegistrationStatus, setLogInStatus }) {
+export default function PasswordRecovery() {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -19,24 +24,24 @@ export default function PasswordRecovery({ serFogotPasswordStataus, setRegistrat
 
   function handleClick(e) {
     if (!ref.current.contains(e.target)) {
-      serFogotPasswordStataus(false);
+      dispatch(setStatusPasswordRecovery(false));
     }
   }
 
   function clickRegisterBtn(e) {
     e.stopPropagation();
-    setRegistrationStatus(true);
-    serFogotPasswordStataus(false);
+    dispatch(setStatusRegister(true));
+    dispatch(setStatusPasswordRecovery(false));
   }
 
   function clickLogInBtn(e) {
     e.stopPropagation();
-    setLogInStatus(true);
-    serFogotPasswordStataus(false);
+    dispatch(setStatusLogIn(true));
+    dispatch(setStatusPasswordRecovery(false));
   }
 
   return (
-    <div onClick={handleClick} className={style.wrapper}>
+    <div className={style.wrapper}>
       <div ref={ref} className={style.password_recovery}>
         <form className={style.password_recovery_form} onSubmit={handleSubmit(onSubmit)}>
           <h2>Восстановление пароля</h2>
@@ -59,7 +64,7 @@ export default function PasswordRecovery({ serFogotPasswordStataus, setRegistrat
           Войти
         </button>
       </div>
-      <div className={style.background}></div>
+      <div onClick={handleClick} className={style.background}></div>
     </div>
   );
 }

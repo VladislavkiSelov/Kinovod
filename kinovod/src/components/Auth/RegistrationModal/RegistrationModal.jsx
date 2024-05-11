@@ -1,13 +1,15 @@
 import React, { useRef } from "react";
 import style from "./RegistrationModal.module.scss";
 import { useForm } from "react-hook-form";
-import Button from "../Button/Button";
+import Button from "../../Button/Button";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../store/slice/userSlice";
-import { mydbConfig } from "../../config";
+import { setUser } from "../../../store/slice/userSlice";
+import { mydbConfig } from "../../../config";
+import { setStatusRegister } from "../../../store/slice/registerSlice";
+import { setStatusLogIn } from "../../../store/slice/logInSlice";
 
-export default function RegistrationModal({ setRegistrationStatus, setLogInStatus }) {
+export default function RegistrationModal() {
   const {
     register,
     handleSubmit,
@@ -41,18 +43,18 @@ export default function RegistrationModal({ setRegistrationStatus, setLogInStatu
 
   function handleClick(e) {
     if (!ref.current.contains(e.target)) {
-      setRegistrationStatus(false);
+      dispatch(setStatusRegister(false));
     }
   }
 
   function clickLogInBtn(e) {
     e.stopPropagation();
-    setLogInStatus(true);
-    setRegistrationStatus(false);
+    dispatch(setStatusLogIn(true));
+    dispatch(setStatusRegister(false));
   }
 
   return (
-    <div onClick={handleClick} className={style.wrapper}>
+    <div className={style.wrapper}>
       <div ref={ref} className={style.registration}>
         <form className={style.registration_form} onSubmit={handleSubmit(onSubmit)}>
           <h2>Регистрация</h2>
@@ -101,7 +103,7 @@ export default function RegistrationModal({ setRegistrationStatus, setLogInStatu
           Войти
         </button>
       </div>
-      <div className={style.background}></div>
+      <div onClick={handleClick} className={style.background}></div>
     </div>
   );
 }

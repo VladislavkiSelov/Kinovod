@@ -2,11 +2,14 @@ import React, { useRef } from "react";
 import style from "./LogInModal.module.scss";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import Button from "../Button/Button";
-import { fetchUser } from "../../store/slice/userSlice";
-import { mydbConfig } from "../../config";
+import Button from "../../Button/Button";
+import { fetchUser } from "../../../store/slice/userSlice";
+import { mydbConfig } from "../../../config";
+import { setStatusLogIn } from "../../../store/slice/logInSlice";
+import { setStatusRegister } from "../../../store/slice/registerSlice";
+import { setStatusPasswordRecovery } from "../../../store/slice/passwordRecovery";
 
-export default function LogInModal({ setLogInStatus, serFogotPasswordStataus, setRegistrationStatus }) {
+export default function LogInModal() {
   const dispatch = useDispatch();
 
   const {
@@ -25,33 +28,34 @@ export default function LogInModal({ setLogInStatus, serFogotPasswordStataus, se
     const token = await dispatch(fetchUser({ url, params }));
 
     if (!token.payload) {
+      localStorage.setItem("user", JSON.stringify([]));
       return;
     }
 
     localStorage.setItem("user", JSON.stringify(token.payload));
-    setLogInStatus(false);
+    dispatch(setStatusLogIn(false));
   };
 
   function handleClick(e) {
     if (!ref.current.contains(e.target)) {
-      setLogInStatus(false);
+      dispatch(setStatusLogIn(false));
     }
   }
 
   function clickRegisterBtn(e) {
     e.stopPropagation();
-    setRegistrationStatus(true);
-    setLogInStatus(false);
+    dispatch(setStatusRegister(true));
+    dispatch(setStatusLogIn(false));
   }
 
   function clickRecoverBtn(e) {
     e.stopPropagation();
-    serFogotPasswordStataus(true);
-    setLogInStatus(false);
+    dispatch(setStatusPasswordRecovery(true));
+    dispatch(setStatusLogIn(false));
   }
 
   return (
-    <div onClick={handleClick} className={style.wrapper}>
+    <div className={style.wrapper}>
       <div ref={ref} className={style.logIn}>
         <form className={style.logIn_form} onSubmit={handleSubmit(onSubmit)}>
           <h2>Вход</h2>
@@ -82,7 +86,7 @@ export default function LogInModal({ setLogInStatus, serFogotPasswordStataus, se
           Я не помню пароль
         </button>
       </div>
-      <div className={style.background}></div>
+      <div onClick={handleClick} className={style.background}></div>
     </div>
   );
 }

@@ -47,6 +47,7 @@
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  cursor: pointer;
 }
 
 .box_input {
@@ -75,6 +76,7 @@
   border-radius: 28px !important;
   padding: 0.8rem 1.4rem !important;
   width: 100% !important;
+  cursor: pointer;
 }
 
 .error {
