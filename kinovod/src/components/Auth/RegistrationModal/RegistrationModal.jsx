@@ -36,9 +36,9 @@ export default function RegistrationModal() {
       .then((res) => {
         dispatch(setUser(res.data));
         localStorage.setItem("user", JSON.stringify(res.data));
+        dispatch(setStatusRegister(false));
       })
       .catch((err) => console.log(err));
-    reset();
   };
 
   function handleClick(e) {
