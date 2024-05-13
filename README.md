@@ -3,5 +3,5 @@
 </p>
 
 
-link to backend - https://github.com/VladislavkiSelov/Kinovod_Server;
-deploy - kinovod-kiselov.netlify.app
+* link to backend - https://github.com/VladislavkiSelov/Kinovod_Server;
+* deploy - https://kinovod-kiselov.netlify.app
