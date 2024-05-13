@@ -2,12 +2,11 @@ import React, { useRef } from "react";
 import style from "./RegistrationModal.module.scss";
 import { useForm } from "react-hook-form";
 import Button from "../../Button/Button";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../store/slice/userSlice";
-import { mydbConfig } from "../../../config";
 import { setStatusRegister } from "../../../store/slice/registerSlice";
 import { setStatusLogIn } from "../../../store/slice/logInSlice";
+import { clientMyDB } from "../../../api/mydb";
 
 export default function RegistrationModal() {
   const {
@@ -25,20 +24,17 @@ export default function RegistrationModal() {
 
   const onSubmit = async (data) => {
     const body = { username: data.name, email: data.email, password: data.password };
-    const url = `${mydbConfig.URL}/auth/register`;
+    const url = `auth/register`;
 
-    axios
-      .post(url, body, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+    clientMyDB
+      .registerUser({ path: url, body })
       .then((res) => {
         dispatch(setUser(res.data));
         localStorage.setItem("user", JSON.stringify(res.data));
         dispatch(setStatusRegister(false));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(()=>{})
   };
 
   function handleClick(e) {

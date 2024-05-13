@@ -10,8 +10,12 @@ async function getApiMydb(path, token, params) {
 }
 
 async function postApiMydb({ path, token, body }) {
+  const headers = {};
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
   const result = await axios.post(`${mydbConfig.URL}/${path}`, body, {
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    headers: { ...headers, "Content-Type": "application/json" },
   });
   return result;
 }
@@ -41,6 +45,9 @@ export const clientMyDB = {
     return await postApiMydb({ path, token, body });
   },
   async setPassword({ path, token, body }) {
+    return await postApiMydb({ path, token, body });
+  },
+  async registerUser({ path, token, body }) {
     return await postApiMydb({ path, token, body });
   },
 };

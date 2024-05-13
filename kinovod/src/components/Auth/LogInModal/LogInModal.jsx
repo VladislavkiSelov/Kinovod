@@ -27,7 +27,7 @@ export default function LogInModal() {
     const params = { email: data.email, password: data.password };
     const token = await dispatch(fetchUser({ url, params }));
 
-    if (!token.payload) {
+    if (!!!token.payload.token) {
       localStorage.setItem("user", JSON.stringify([]));
       return;
     }
@@ -77,7 +77,7 @@ export default function LogInModal() {
             />
             {errors?.password && <p className={style.error}>{errors.password.message}</p>}
           </div>
-          <Button text="Войти" classBtn={style.btn_logIn} />
+          <Button text="Войти" handelClick={handleSubmit(onSubmit)} classBtn={style.btn_logIn} />
         </form>
         <button onClick={clickRegisterBtn} className={style.register_btn}>
           Зарегистрироваться
